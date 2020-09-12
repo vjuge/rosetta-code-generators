@@ -1,5 +1,6 @@
 package com.regnosys.rosetta.generator.kotlin.object;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.regnosys.rosetta.RosettaExtensions;
@@ -162,9 +163,10 @@ public class KotlinModelObjectGenerator {
   
   private CharSequence generateExpandedAttribute(final Data c, final ExpandedAttribute attribute) {
     CharSequence _xifexpression = null;
-    boolean _isOverriding = attribute.isOverriding();
-    boolean _not = (!_isOverriding);
-    if (_not) {
+    String _enclosingType = attribute.getEnclosingType();
+    String _name = c.getName();
+    boolean _equals = Objects.equal(_enclosingType, _name);
+    if (_equals) {
       CharSequence _xifexpression_1 = null;
       if ((attribute.isEnum() && (!attribute.hasMetas()))) {
         CharSequence _xifexpression_2 = null;

@@ -51,16 +51,18 @@ class KotlinMetaFieldGenerator {
             package org.isda.cdm.metafields
 
 		import kotlinx.serialization.*
-            import kotlinx.serialization.json.*
+        import kotlinx.serialization.json.*
 
-            import org.isda.cdm.*
-
+        import org.isda.cdm.*
+        
             '''
 
     private def generateFieldWithMeta(ExpandedType type) '''
     @Serializable
-    open class FieldWithMeta«type.toMetaTypeName»(«generateAttribute(type)»,
-    meta: MetaFields?) {}
+    open class FieldWithMeta«type.toMetaTypeName»{
+    	«generateAttribute(type)»,
+    meta: MetaFields?
+    }
 
 	'''
 

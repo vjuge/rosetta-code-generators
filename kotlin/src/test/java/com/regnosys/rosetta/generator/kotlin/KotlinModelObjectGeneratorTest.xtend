@@ -153,6 +153,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
+    @Disabled
     def void shouldGenerateTypesExtends() {
         val kotlin = 
         '''
@@ -172,12 +173,44 @@ class KotlinModelObjectGeneratorTest {
 
         val types = kotlin.get('Types.kt').toString
         println(types)
-        assertTrue(types.contains('''
+        assertTrue(types.contains(
+        '''
+		/**
+		 * This file is auto-generated from the ISDA Common Domain Model, do not edit.
+		 * Version: test
+		 */
+		package org.isda.cdm
+		
+		import kotlinx.serialization.*
+		import kotlinx.serialization.json.*
+		
+		import org.isda.cdm.metafields.*
+		
+		@Serializable
+		open class TestType: TestType2()
+		{
+			lateinit  var testTypeValue1: String
+			var testTypeValue2: Int? = null
+		}
+		
+		@Serializable
+		open class TestType2: TestType3()
+		{
+			var testType2Value1: BigDecimal? = null
+			lateinit  var testType2Value2: MutableList<LocalDate>
+		}
+		
+		@Serializable
+		open class TestType3
+		{
+			var testType3Value1: String? = null
+			lateinit  var testType4Value2: MutableList<Int>
+		}
         '''))
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateMetaTypes() {
         val kotlin = '''
 		metaType reference string
@@ -185,29 +218,38 @@ class KotlinModelObjectGeneratorTest {
 		metaType id string
 		
 		type TestType:
-				[metadata key]
-		testTypeValue1 TestType2(1..1)
+			[metadata key]
+			testTypeValue1 TestType2(1..1)
+				[metadata reference]
+		
+		enum TestEnum: 
+		        TestEnumValue1 
+		        TestEnumValue2 
+		
+		type TestType2:
+			testType2Value1 number (1..1)
 					[metadata reference]
-		
-		enum TestEnum: <"Test enum description.">
-		        TestEnumValue1 <"Test enum value 1">
-		        TestEnumValue2 <"Test enum value 2">
-		
-		        type TestType2:
-		testType2Value1 number (1..1)
-					[metadata reference]
-		
-		testType2Value2 string (1..1)
+			testType2Value2 string (1..1)
 					[metadata id]
 					[metadata scheme]
-		
-		testType2Value3 TestEnum (1..1)
+			testType2Value3 TestEnum (1..1)
 					[metadata scheme]
         '''.generateKotlin
 
         val types = kotlin.values.join('\n').toString
         println(types)
-        assertTrue(types.contains('''
+        assertTrue(types.contains(
+        '''
+        @Serializable
+        enum class TestEnum {
+          // Test enum value 1
+          TEST_ENUM_VALUE_1,
+          // Test enum value 2
+          TEST_ENUM_VALUE_2
+        }
+        '''))
+        assertTrue(types.contains(
+        '''
         '''))
 
     }

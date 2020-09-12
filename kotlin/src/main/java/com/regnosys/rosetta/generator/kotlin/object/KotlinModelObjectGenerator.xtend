@@ -78,21 +78,27 @@ class KotlinModelObjectGenerator {
     }
 
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
-	   if(!attribute.isOverriding()){     
+	   //println(c)
+	   //println(attribute)
+	   if(attribute.enclosingType == c.name){     
 	        if (attribute.enum && !attribute.hasMetas) {
 	            if (attribute.singleOptional) {
-	                '''var «attribute.toAttributeName»: «attribute.toType» = null
+	                '''
+	                	var «attribute.toAttributeName»: «attribute.toType» = null
 	                '''
 	            } else {
-	                '''lateinit	var «attribute.toAttributeName»: «attribute.toType»
+	                '''
+	                	lateinit var «attribute.toAttributeName»: «attribute.toType»
 	                '''
 	            }
 	        } else {
 	        	if (attribute.singleOptional) {
-	                '''var «attribute.toAttributeName»: «attribute.toType» = null
+	                '''
+	                	var «attribute.toAttributeName»: «attribute.toType» = null
 	                '''
 	            } else {
-	                '''lateinit	var «attribute.toAttributeName»: «attribute.toType»
+	                '''
+	                	lateinit var «attribute.toAttributeName»: «attribute.toType»
 	                '''
 	            }
 	        }
