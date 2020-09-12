@@ -42,24 +42,23 @@ class KotlinEnumGenerator {
 
     private def generateEnums(List<RosettaEnumeration> enums, String version)
 		'''
-                «fileComment(version)»
-            package org.isda.cdm
+		«fileComment(version)»
+		package org.isda.cdm
 		import kotlinx.serialization.*
-            import kotlinx.serialization.json.*
-
-            «FOR e : enums»
-            «val allEnumValues = allEnumsValues(e)»
-            «comment(e.definition)»
-    @Serializable
-    enum class «e.name» {
-				«FOR value: allEnumValues SEPARATOR ','»
-					«comment(value.definition)»
-					«EnumHelper.convertValues(value)»
-				«ENDFOR»
-    }
-
+		import kotlinx.serialization.json.*
+		
+		«FOR e : enums SEPARATOR "\n"»
+		«val allEnumValues = allEnumsValues(e)»
+		«comment(e.definition)»
+		@Serializable
+		enum class «e.name» {
+			«FOR value: allEnumValues SEPARATOR ','»
+			«comment(value.definition)»
+			«EnumHelper.convertValues(value)»
+			«ENDFOR»
+		}
 		«ENDFOR»
-            '''
+		'''
 
     def boolean anyValueHasSynonym(RosettaEnumeration enumeration) {
         enumeration.allEnumsValues.map[enumSynonyms].flatten.size > 0

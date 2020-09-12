@@ -49,7 +49,7 @@ public class KotlinTranslator {
     if (!_matched) {
       if (Objects.equal(typename, "number")) {
         _matched=true;
-        _switchResult = "Number";
+        _switchResult = "BigDecimal";
       }
     }
     if (!_matched) {

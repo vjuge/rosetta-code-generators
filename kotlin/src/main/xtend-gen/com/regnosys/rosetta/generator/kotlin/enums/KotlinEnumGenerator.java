@@ -74,27 +74,28 @@ public class KotlinEnumGenerator {
   
   private CharSequence generateEnums(final List<RosettaEnumeration> enums, final String version) {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("                ");
     CharSequence _fileComment = KotlinModelGeneratorUtil.fileComment(version);
-    _builder.append(_fileComment, "                ");
+    _builder.append(_fileComment);
     _builder.newLineIfNotEmpty();
-    _builder.append("            ");
     _builder.append("package org.isda.cdm");
     _builder.newLine();
     _builder.append("import kotlinx.serialization.*");
     _builder.newLine();
-    _builder.append("            ");
     _builder.append("import kotlinx.serialization.json.*");
     _builder.newLine();
     _builder.newLine();
     {
+      boolean _hasElements = false;
       for(final RosettaEnumeration e : enums) {
-        _builder.append("        ");
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate("\n", "");
+        }
         final List<RosettaEnumValue> allEnumValues = this.allEnumsValues(e);
         _builder.newLineIfNotEmpty();
-        _builder.append("        ");
         CharSequence _comment = KotlinModelGeneratorUtil.comment(e.getDefinition());
-        _builder.append(_comment, "        ");
+        _builder.append(_comment);
         _builder.newLineIfNotEmpty();
         _builder.append("@Serializable");
         _builder.newLine();
@@ -104,25 +105,24 @@ public class KotlinEnumGenerator {
         _builder.append(" {");
         _builder.newLineIfNotEmpty();
         {
-          boolean _hasElements = false;
+          boolean _hasElements_1 = false;
           for(final RosettaEnumValue value : allEnumValues) {
-            if (!_hasElements) {
-              _hasElements = true;
+            if (!_hasElements_1) {
+              _hasElements_1 = true;
             } else {
-              _builder.appendImmediate(",", "\t\t\t\t");
+              _builder.appendImmediate(",", "\t");
             }
-            _builder.append("\t\t\t\t");
+            _builder.append("\t");
             CharSequence _comment_1 = KotlinModelGeneratorUtil.comment(value.getDefinition());
-            _builder.append(_comment_1, "\t\t\t\t");
+            _builder.append(_comment_1, "\t");
             _builder.newLineIfNotEmpty();
-            _builder.append("\t\t\t\t");
+            _builder.append("\t");
             String _convertValues = EnumHelper.convertValues(value);
-            _builder.append(_convertValues, "\t\t\t\t");
+            _builder.append(_convertValues, "\t");
             _builder.newLineIfNotEmpty();
           }
         }
         _builder.append("}");
-        _builder.newLine();
         _builder.newLine();
       }
     }

@@ -79,6 +79,9 @@ public class KotlinModelObjectGenerator {
     return _xblockexpression;
   }
   
+  /**
+   * Generate the classes
+   */
   private CharSequence generateClasses(final List<Data> rosettaClasses, final Set<Data> superTypes, final String version) {
     StringConcatenation _builder = new StringConcatenation();
     CharSequence _fileComment = KotlinModelGeneratorUtil.fileComment(version);
@@ -96,36 +99,31 @@ public class KotlinModelObjectGenerator {
     _builder.newLine();
     _builder.newLine();
     {
+      boolean _hasElements = false;
       for(final Data c : rosettaClasses) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate("\n", "");
+        }
         CharSequence _classComment = KotlinModelGeneratorUtil.classComment(c.getDefinition(), this.allExpandedAttributes(c));
         _builder.append(_classComment);
         _builder.newLineIfNotEmpty();
-        _builder.append("        ");
         _builder.append("@Serializable");
         _builder.newLine();
-        _builder.append("        ");
         _builder.append("open class ");
         String _name = c.getName();
-        _builder.append(_name, "        ");
-        _builder.newLineIfNotEmpty();
-        _builder.append("        ");
-        _builder.append("(");
-        _builder.newLine();
-        CharSequence _generateAttributes = this.generateAttributes(c);
-        _builder.append(_generateAttributes);
-        _builder.newLineIfNotEmpty();
-        _builder.append(") ");
+        _builder.append(_name);
         {
           if (((c.getSuperType() == null) && (!superTypes.contains(c)))) {
           }
         }
-        _builder.newLineIfNotEmpty();
         {
           if (((c.getSuperType() != null) && superTypes.contains(c))) {
             _builder.append(": ");
             String _name_1 = c.getSuperType().getName();
             _builder.append(_name_1);
-            _builder.newLineIfNotEmpty();
+            _builder.append("()");
           } else {
             Data _superType = c.getSuperType();
             boolean _tripleNotEquals = (_superType != null);
@@ -133,11 +131,17 @@ public class KotlinModelObjectGenerator {
               _builder.append(": ");
               String _name_2 = c.getSuperType().getName();
               _builder.append(_name_2);
-              _builder.newLineIfNotEmpty();
+              _builder.append("()");
             }
           }
         }
+        _builder.newLineIfNotEmpty();
+        _builder.append("{");
         _builder.newLine();
+        CharSequence _generateAttributes = this.generateAttributes(c);
+        _builder.append(_generateAttributes);
+        _builder.newLineIfNotEmpty();
+        _builder.append("}");
         _builder.newLine();
       }
     }
@@ -148,13 +152,7 @@ public class KotlinModelObjectGenerator {
     StringConcatenation _builder = new StringConcatenation();
     {
       Iterable<ExpandedAttribute> _allExpandedAttributes = this.allExpandedAttributes(c);
-      boolean _hasElements = false;
       for(final ExpandedAttribute attribute : _allExpandedAttributes) {
-        if (!_hasElements) {
-          _hasElements = true;
-        } else {
-          _builder.appendImmediate(",", "");
-        }
         CharSequence _generateExpandedAttribute = this.generateExpandedAttribute(c, attribute);
         _builder.append(_generateExpandedAttribute);
       }
@@ -164,44 +162,64 @@ public class KotlinModelObjectGenerator {
   
   private CharSequence generateExpandedAttribute(final Data c, final ExpandedAttribute attribute) {
     CharSequence _xifexpression = null;
-    if ((attribute.isEnum() && (!attribute.hasMetas()))) {
+    boolean _isOverriding = attribute.isOverriding();
+    boolean _not = (!_isOverriding);
+    if (_not) {
       CharSequence _xifexpression_1 = null;
-      boolean _isSingleOptional = attribute.isSingleOptional();
-      if (_isSingleOptional) {
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("\t");
-        _builder.append("var ");
-        CharSequence _attributeName = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
-        _builder.append(_attributeName, "\t");
-        _builder.append(": ");
-        CharSequence _type = this._kotlinModelObjectBoilerPlate.toType(attribute);
-        _builder.append(_type, "\t");
-        _builder.newLineIfNotEmpty();
-        _xifexpression_1 = _builder;
+      if ((attribute.isEnum() && (!attribute.hasMetas()))) {
+        CharSequence _xifexpression_2 = null;
+        boolean _isSingleOptional = attribute.isSingleOptional();
+        if (_isSingleOptional) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("var ");
+          CharSequence _attributeName = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
+          _builder.append(_attributeName);
+          _builder.append(": ");
+          CharSequence _type = this._kotlinModelObjectBoilerPlate.toType(attribute);
+          _builder.append(_type);
+          _builder.append(" = null");
+          _builder.newLineIfNotEmpty();
+          _xifexpression_2 = _builder;
+        } else {
+          StringConcatenation _builder_1 = new StringConcatenation();
+          _builder_1.append("lateinit\tvar ");
+          CharSequence _attributeName_1 = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
+          _builder_1.append(_attributeName_1);
+          _builder_1.append(": ");
+          CharSequence _type_1 = this._kotlinModelObjectBoilerPlate.toType(attribute);
+          _builder_1.append(_type_1);
+          _builder_1.newLineIfNotEmpty();
+          _xifexpression_2 = _builder_1;
+        }
+        _xifexpression_1 = _xifexpression_2;
       } else {
-        StringConcatenation _builder_1 = new StringConcatenation();
-        _builder_1.append("\t");
-        _builder_1.append("var ");
-        CharSequence _attributeName_1 = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
-        _builder_1.append(_attributeName_1, "\t");
-        _builder_1.append(": ");
-        CharSequence _type_1 = this._kotlinModelObjectBoilerPlate.toType(attribute);
-        _builder_1.append(_type_1, "\t");
-        _builder_1.newLineIfNotEmpty();
-        _xifexpression_1 = _builder_1;
+        CharSequence _xifexpression_3 = null;
+        boolean _isSingleOptional_1 = attribute.isSingleOptional();
+        if (_isSingleOptional_1) {
+          StringConcatenation _builder_2 = new StringConcatenation();
+          _builder_2.append("var ");
+          CharSequence _attributeName_2 = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
+          _builder_2.append(_attributeName_2);
+          _builder_2.append(": ");
+          CharSequence _type_2 = this._kotlinModelObjectBoilerPlate.toType(attribute);
+          _builder_2.append(_type_2);
+          _builder_2.append(" = null");
+          _builder_2.newLineIfNotEmpty();
+          _xifexpression_3 = _builder_2;
+        } else {
+          StringConcatenation _builder_3 = new StringConcatenation();
+          _builder_3.append("lateinit\tvar ");
+          CharSequence _attributeName_3 = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
+          _builder_3.append(_attributeName_3);
+          _builder_3.append(": ");
+          CharSequence _type_3 = this._kotlinModelObjectBoilerPlate.toType(attribute);
+          _builder_3.append(_type_3);
+          _builder_3.newLineIfNotEmpty();
+          _xifexpression_3 = _builder_3;
+        }
+        _xifexpression_1 = _xifexpression_3;
       }
       _xifexpression = _xifexpression_1;
-    } else {
-      StringConcatenation _builder_2 = new StringConcatenation();
-      _builder_2.append("\t");
-      _builder_2.append("var ");
-      CharSequence _attributeName_2 = this._kotlinModelObjectBoilerPlate.toAttributeName(attribute);
-      _builder_2.append(_attributeName_2, "\t");
-      _builder_2.append(": ");
-      CharSequence _type_2 = this._kotlinModelObjectBoilerPlate.toType(attribute);
-      _builder_2.append(_type_2, "\t");
-      _builder_2.newLineIfNotEmpty();
-      _xifexpression = _builder_2;
     }
     return _xifexpression;
   }

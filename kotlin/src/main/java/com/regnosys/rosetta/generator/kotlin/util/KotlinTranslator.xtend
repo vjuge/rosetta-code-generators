@@ -14,7 +14,7 @@ class KotlinTranslator {
             case 'date': 'LocalDate'
             case 'dateTime': 'LocalDateTime'
             case 'zonedDateTime': 'LocalDateTime'
-            case 'number': 'Number'
+            case 'number': 'BigDecimal'
             case 'boolean': 'Boolean'
             case RQualifiedType.PRODUCT_TYPE.qualifiedType: 'String'
             case RQualifiedType.EVENT_TYPE.qualifiedType: 'String'

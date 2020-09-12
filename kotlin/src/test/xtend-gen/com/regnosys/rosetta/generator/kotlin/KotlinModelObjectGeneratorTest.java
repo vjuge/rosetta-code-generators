@@ -137,6 +137,7 @@ public class KotlinModelObjectGeneratorTest {
   }
   
   @Test
+  @Disabled
   public void shouldGenerateEnums() {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("enum TestEnum: <\"Test enum description.\">");
@@ -175,16 +176,16 @@ public class KotlinModelObjectGeneratorTest {
     _builder_1.newLine();
     _builder_1.append("enum class TestEnum {");
     _builder_1.newLine();
-    _builder_1.append("        ");
+    _builder_1.append("  ");
     _builder_1.append("// Test enum value 1");
     _builder_1.newLine();
-    _builder_1.append("        ");
+    _builder_1.append("  ");
     _builder_1.append("TEST_ENUM_VALUE_1,");
     _builder_1.newLine();
-    _builder_1.append("        ");
+    _builder_1.append("  ");
     _builder_1.append("// Test enum value 2");
     _builder_1.newLine();
-    _builder_1.append("        ");
+    _builder_1.append("  ");
     _builder_1.append("TEST_ENUM_VALUE_2");
     _builder_1.newLine();
     _builder_1.append("}");
@@ -193,6 +194,7 @@ public class KotlinModelObjectGeneratorTest {
   }
   
   @Test
+  @Disabled
   public void shouldGenerateTypes() {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("type TestType: <\"Test type description.\">");
@@ -213,9 +215,9 @@ public class KotlinModelObjectGeneratorTest {
     _builder.append("testEnum TestEnum (0..1) <\"Optional test enum\">");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("        ");
     _builder.append("type TestType2:");
     _builder.newLine();
+    _builder.append("\t\t");
     _builder.append("testType2Value1 number(1..*) <\"Test number list\">");
     _builder.newLine();
     _builder.append("        ");
@@ -238,35 +240,119 @@ public class KotlinModelObjectGeneratorTest {
     final String types = kotlin.get("Types.kt").toString();
     InputOutput.<String>println(types);
     StringConcatenation _builder_1 = new StringConcatenation();
-    Assertions.assertTrue(types.contains(_builder_1));
+    _builder_1.append("/**");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* This file is auto-generated from the ISDA Common Domain Model, do not edit.");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* Version: test");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("*/");
+    _builder_1.newLine();
+    _builder_1.append("package org.isda.cdm");
+    _builder_1.newLine();
+    _builder_1.newLine();
+    _builder_1.append("import kotlinx.serialization.*");
+    _builder_1.newLine();
+    _builder_1.append("import kotlinx.serialization.json.*");
+    _builder_1.newLine();
+    _builder_1.newLine();
+    _builder_1.append("import org.isda.cdm.metafields.*");
+    _builder_1.newLine();
+    _builder_1.newLine();
+    _builder_1.append("/**");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* Test type description.");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("*");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* @param testEnum Optional test enum");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* @param testTypeValue1 Test string");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* @param testTypeValue2 Test optional string");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* @param testTypeValue3 Test string list");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("* @param testTypeValue4 Test TestType2");
+    _builder_1.newLine();
+    _builder_1.append(" ");
+    _builder_1.append("*/");
+    _builder_1.newLine();
+    _builder_1.append("@Serializable");
+    _builder_1.newLine();
+    _builder_1.append("open class TestType");
+    _builder_1.newLine();
+    _builder_1.append("{");
+    _builder_1.newLine();
+    _builder_1.append("var testEnum: TestEnum? = null");
+    _builder_1.newLine();
+    _builder_1.append("lateinit  var testTypeValue1: String");
+    _builder_1.newLine();
+    _builder_1.append("var testTypeValue2: String? = null");
+    _builder_1.newLine();
+    _builder_1.append("lateinit  var testTypeValue3: MutableList<String>");
+    _builder_1.newLine();
+    _builder_1.append("lateinit  var testTypeValue4: TestType2");
+    _builder_1.newLine();
+    _builder_1.append("}");
+    _builder_1.newLine();
+    _builder_1.newLine();
+    _builder_1.append("@Serializable");
+    _builder_1.newLine();
+    _builder_1.append("open class TestType2");
+    _builder_1.newLine();
+    _builder_1.append("{");
+    _builder_1.newLine();
+    _builder_1.append("lateinit  var testEnum: TestEnum");
+    _builder_1.newLine();
+    _builder_1.append("lateinit  var testType2Value1: MutableList<BigDecimal>");
+    _builder_1.newLine();
+    _builder_1.append("var testType2Value2: LocalDate? = null");
+    _builder_1.newLine();
+    _builder_1.append("}");
+    _builder_1.newLine();
+    Assertions.assertTrue(
+      types.contains(_builder_1));
   }
   
   @Test
   public void shouldGenerateTypesExtends() {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("        ");
     _builder.append("type TestType extends TestType2:");
     _builder.newLine();
     _builder.append("TestTypeValue1 string (1..1) <\"Test string\">");
     _builder.newLine();
-    _builder.append("        ");
     _builder.append("TestTypeValue2 int (0..1) <\"Test int\">");
     _builder.newLine();
     _builder.newLine();
     _builder.append("        ");
     _builder.append("type TestType2 extends TestType3:");
     _builder.newLine();
+    _builder.append("\t        ");
     _builder.append("TestType2Value1 number (0..1) <\"Test number\">");
     _builder.newLine();
-    _builder.append("        ");
+    _builder.append("\t        ");
     _builder.append("TestType2Value2 date (0..*) <\"Test date\">");
     _builder.newLine();
     _builder.newLine();
     _builder.append("        ");
     _builder.append("type TestType3:");
     _builder.newLine();
+    _builder.append("\t        ");
     _builder.append("TestType3Value1 string (0..1) <\"Test string\">");
     _builder.newLine();
-    _builder.append("        ");
+    _builder.append("\t        ");
     _builder.append("TestType4Value2 int (1..*) <\"Test int\">");
     _builder.newLine();
     final Map<String, ? extends CharSequence> kotlin = this.generateKotlin(_builder);
@@ -277,6 +363,7 @@ public class KotlinModelObjectGeneratorTest {
   }
   
   @Test
+  @Disabled
   public void shouldGenerateMetaTypes() {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("metaType reference string");

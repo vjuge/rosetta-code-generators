@@ -49,50 +49,54 @@ class KotlinModelObjectGenerator {
         result;
     }
 
+	/**
+	 * Generate the classes
+	 */
     private def generateClasses(List<Data> rosettaClasses, Set<Data> superTypes, String version) {
-        '''
+		'''
 		«fileComment(version)»
 		package org.isda.cdm
-
+		
 		import kotlinx.serialization.*
 		import kotlinx.serialization.json.*
-
+		
 		import org.isda.cdm.metafields.*
-
-		«FOR c : rosettaClasses»
-				«classComment(c.definition, c.allExpandedAttributes)»
-        @Serializable
-        open class «c.name»
-        (
-				«generateAttributes(c)»
-				) «IF c.superType === null && !superTypes.contains(c)»«ENDIF»
-				«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»
-				«ELSEIF c.superType !== null»: «c.superType.name»
-				«ENDIF»
-
-
+		
+		«FOR c : rosettaClasses SEPARATOR "\n"»
+		«classComment(c.definition, c.allExpandedAttributes)»
+		@Serializable
+		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF»«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
+		{
+		«generateAttributes(c)»
+		}
 		«ENDFOR»
-        '''
+		'''
     }
 
     private def generateAttributes(Data c) {
-        '''«FOR attribute : c.allExpandedAttributes SEPARATOR ','»«generateExpandedAttribute(c, attribute)»«ENDFOR»'''
+        '''«FOR attribute : c.allExpandedAttributes»«generateExpandedAttribute(c, attribute)»«ENDFOR»'''
     }
 
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
-        if (attribute.enum && !attribute.hasMetas) {
-            //check here if attribute is inherited, if so add 'override' before
-            if (attribute.singleOptional) {
-                '''	var «attribute.toAttributeName»: «attribute.toType»
-                '''
-            } else {
-                '''	var «attribute.toAttributeName»: «attribute.toType»
-                '''
-            }
-        } else {
-            '''	var «attribute.toAttributeName»: «attribute.toType»
-            '''
-        }
+	   if(!attribute.isOverriding()){     
+	        if (attribute.enum && !attribute.hasMetas) {
+	            if (attribute.singleOptional) {
+	                '''var «attribute.toAttributeName»: «attribute.toType» = null
+	                '''
+	            } else {
+	                '''lateinit	var «attribute.toAttributeName»: «attribute.toType»
+	                '''
+	            }
+	        } else {
+	        	if (attribute.singleOptional) {
+	                '''var «attribute.toAttributeName»: «attribute.toType» = null
+	                '''
+	            } else {
+	                '''lateinit	var «attribute.toAttributeName»: «attribute.toType»
+	                '''
+	            }
+	        }
+		}        
     }
 
 
@@ -116,8 +120,7 @@ class KotlinModelObjectGenerator {
     def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(Data type){
         type.allSuperTypes.map[it.expandedAttributes].flatten
     }
-
-
+    
     def dispatch String definition(RosettaClass element) {
         element.definition
     }
