@@ -53,20 +53,13 @@ public class KotlinMetaFieldGenerator {
   
   private CharSequence generateMetaFieldsImports() {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("            ");
     _builder.append("package org.isda.cdm.metafields");
     _builder.newLine();
     _builder.newLine();
     _builder.append("import kotlinx.serialization.*");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("import kotlinx.serialization.json.*");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("        ");
     _builder.append("import org.isda.cdm.*");
     _builder.newLine();
-    _builder.append("        ");
     _builder.newLine();
     return _builder;
   }

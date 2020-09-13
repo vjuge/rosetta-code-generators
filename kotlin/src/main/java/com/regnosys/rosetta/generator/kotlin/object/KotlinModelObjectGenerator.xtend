@@ -57,9 +57,7 @@ class KotlinModelObjectGenerator {
 		«fileComment(version)»
 		package org.isda.cdm
 		
-		import kotlinx.serialization.*
-		import kotlinx.serialization.json.*
-		
+		import kotlinx.serialization.*		
 		import org.isda.cdm.metafields.*
 		
 		«FOR c : rosettaClasses SEPARATOR "\n"»

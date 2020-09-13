@@ -47,53 +47,61 @@ class KotlinMetaFieldGenerator {
         return fileComment(version) + metaFieldsImports + referenceWithMeta + metaFields
     }
 
-    private def generateMetaFieldsImports() '''
-            package org.isda.cdm.metafields
+    private def generateMetaFieldsImports() 
+    '''
+	package org.isda.cdm.metafields
+	
+	import kotlinx.serialization.*
+	import org.isda.cdm.*
 
-		import kotlinx.serialization.*
-        import kotlinx.serialization.json.*
-
-        import org.isda.cdm.*
-        
-            '''
+	'''
 
     private def generateFieldWithMeta(ExpandedType type) '''
     @Serializable
     open class FieldWithMeta«type.toMetaTypeName»{
-    	«generateAttribute(type)»,
-    meta: MetaFields?
+    	«generateAttribute(type)»
+    	var meta: MetaFields? = null
     }
 
 	'''
 
     private def generateAttribute(ExpandedType type) {
         if (type.enumeration) {
-            '''value: «type.toKotlinType»?'''
+            '''var value: «type.toKotlinType»? = null'''
         } else {
-            '''value: «type.toKotlinType»?'''
+            '''var value: «type.toKotlinType»? = null'''
         }
     }
 
-    private def generateReferenceWithMeta(ExpandedType type) '''
+    private def generateReferenceWithMeta(ExpandedType type)
+    '''
     @Serializable
-    open class ReferenceWithMeta«type.toMetaTypeName»(value: «type.toKotlinType»?,
-    globalReference: String?,
-    externalReference: String?) {}
+    open class ReferenceWithMeta«type.toMetaTypeName»{
+    	var value: «type.toKotlinType»? = null
+    	var globalReference: String? = null
+    	var externalReference: String? = null
+    }
+    
+	'''
+    private def generateBasicReferenceWithMeta(ExpandedType type) 
+    '''
+    @Serializable
+    open class BasicReferenceWithMeta«type.toMetaTypeName»{
+    	var value: «type.toKotlinType»? = null
+    	var globalReference: String? = null
+    	var externalReference: String? = null
+    }
 
 	'''
-    private def generateBasicReferenceWithMeta(ExpandedType type) '''
-    @Serializable
-    open class BasicReferenceWithMeta«type.toMetaTypeName»(value: «type.toKotlinType»?,
-    globalReference: String?,
-    externalReference: String?) {}
 
-	'''
-
-    private def genMetaFields(Iterable<RosettaMetaType> types, String version) '''
+    private def genMetaFields(Iterable<RosettaMetaType> types, String version) 
+    '''
     @Serializable
-    open class MetaFields(«FOR type : types.distinctBy(t|t.name.toFirstLower) SEPARATOR '\n		'»«type.name.toFirstLower»: «type.type.name.toKotlinBasicType»?,«ENDFOR»
-    globalKey: String?,
-    externalKey: String?) {}
+    open class MetaFields{
+    	«FOR type : types.distinctBy(t|t.name.toFirstLower) SEPARATOR '\n'»var «type.name.toFirstLower»: «type.type.name.toKotlinBasicType»? = null«ENDFOR»
+    	var globalKey: String? = null
+    	var externalKey: String? = null
+    }
 
 	'''
 }

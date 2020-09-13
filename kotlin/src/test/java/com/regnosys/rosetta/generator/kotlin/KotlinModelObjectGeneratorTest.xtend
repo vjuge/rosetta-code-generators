@@ -242,9 +242,7 @@ class KotlinModelObjectGeneratorTest {
         '''
         @Serializable
         enum class TestEnum {
-          // Test enum value 1
           TEST_ENUM_VALUE_1,
-          // Test enum value 2
           TEST_ENUM_VALUE_2
         }
         '''))
