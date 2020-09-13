@@ -210,7 +210,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateMetaTypes() {
         val kotlin = '''
 		metaType reference string
