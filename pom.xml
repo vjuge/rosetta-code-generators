@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (c) REGnosys 2019 (www.regnosys.com) All rights reserved.
 	This program is licensed to you under the Apache License Version 2.0, and
 	you may not use this file except in compliance with the Apache License Version
@@ -7,7 +7,10 @@
 	under the Apache License Version 2.0 is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the Apache License Version 2.0 for the specific language governing permissions
-	and limitations there under. --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	and limitations there under. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.regnosys.rosetta.code-generators</groupId>
@@ -28,7 +31,7 @@
 		<profile>
 			<id>regnosys</id>
 			<properties>
-				<rosetta.dsl.version>0.0.0.master</rosetta.dsl.version>
+				<rosetta.dsl.version>3.3.0</rosetta.dsl.version>
 				<regnosys.common.version>0.0.0.master</regnosys.common.version>
 			</properties>
 		</profile>
@@ -38,7 +41,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<rosetta.dsl.version>3.0.0</rosetta.dsl.version>
+				<rosetta.dsl.version>3.3.0</rosetta.dsl.version>
 				<regnosys.common.version>2.21.1</regnosys.common.version>
 			</properties>
 		</profile>
@@ -56,6 +59,9 @@
 		<commons-io.version>2.6</commons-io.version>
 		<junit.jupiter.version>5.1.0</junit.jupiter.version>
 		<hamcrest.version>2.0.0.0</hamcrest.version>
+		<xtend.version>2.15.0</xtend.version>
+		<apache.commons.lang.version>3.9</apache.commons.lang.version>
+		<apache.commons.text.version>1.9</apache.commons.text.version>
 	</properties>
 
 	<modules>
@@ -67,7 +73,8 @@
 		<module>scala</module>
 		<module>golang</module>
 	  	<module>kotlin</module>
-  </modules>
+		<module>c-sharp</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>

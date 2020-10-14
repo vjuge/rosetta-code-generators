@@ -34,8 +34,9 @@ class KotlinModelObjectGeneratorTest {
         val dirs = newArrayList(
                 //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta'),
                 //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
-                ('rosetta-cdm/src/main/rosetta'),
-                ('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
+                //('rosetta-cdm/src/main/rosetta'),
+                //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
+                ('/Users/vincentjuge/devel/vjuge/cdm-kotlin/src/main/resources/cdm-rosetta')
         );
 
         val resourceSet = resourceSetProvider.get
@@ -55,7 +56,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateEnums() {
         val kotlin = '''
         enum TestEnum: <"Test enum description.">
@@ -86,7 +87,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateTypes() {
         val kotlin = '''
         type TestType: <"Test type description.">
@@ -117,9 +118,7 @@ class KotlinModelObjectGeneratorTest {
 		 */
 		package org.isda.cdm
 		
-		import kotlinx.serialization.*
-		import kotlinx.serialization.json.*
-		
+		import kotlinx.serialization.*    
 		import org.isda.cdm.metafields.*
 		
 		/**
@@ -135,17 +134,17 @@ class KotlinModelObjectGeneratorTest {
 		open class TestType
 		{
 		var testEnum: TestEnum? = null
-		lateinit  var testTypeValue1: String
+		lateinit var testTypeValue1: String
 		var testTypeValue2: String? = null
-		lateinit  var testTypeValue3: MutableList<String>
-		lateinit  var testTypeValue4: TestType2
+		lateinit var testTypeValue3: MutableList<String>
+		lateinit var testTypeValue4: TestType2
 		}
 		
 		@Serializable
 		open class TestType2
 		{
-		lateinit  var testEnum: TestEnum
-		lateinit  var testType2Value1: MutableList<BigDecimal>
+		lateinit var testEnum: TestEnum
+		lateinit var testType2Value1: MutableList<BigDecimal>
 		var testType2Value2: LocalDate? = null
 		}
         '''))
@@ -153,7 +152,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateTypesExtends() {
         val kotlin = 
         '''
@@ -210,7 +209,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateMetaTypes() {
         val kotlin = '''
 		metaType reference string
@@ -253,7 +252,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    @Disabled("TODO fix oneOf code generation for attributes that are Lists")
+    //@Disabled("TODO fix oneOf code generation for attributes that are Lists")
     def void shouldGenerateOneOfCondition() {
         val kotlin = '''
         type TestType: <"Test type with one-of condition.">
