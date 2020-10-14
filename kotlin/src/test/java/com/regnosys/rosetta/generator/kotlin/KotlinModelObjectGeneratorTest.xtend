@@ -180,30 +180,28 @@ class KotlinModelObjectGeneratorTest {
 		 */
 		package org.isda.cdm
 		
-		import kotlinx.serialization.*
-		import kotlinx.serialization.json.*
-		
+		import kotlinx.serialization.*    
 		import org.isda.cdm.metafields.*
 		
 		@Serializable
 		open class TestType: TestType2()
 		{
-			lateinit  var testTypeValue1: String
-			var testTypeValue2: Int? = null
+		lateinit var testTypeValue1: String
+		var testTypeValue2: Int? = null
 		}
 		
 		@Serializable
 		open class TestType2: TestType3()
 		{
-			var testType2Value1: BigDecimal? = null
-			lateinit  var testType2Value2: MutableList<LocalDate>
+		var testType2Value1: BigDecimal? = null
+		lateinit var testType2Value2: MutableList<LocalDate>
 		}
 		
 		@Serializable
 		open class TestType3
 		{
-			var testType3Value1: String? = null
-			lateinit  var testType4Value2: MutableList<Int>
+		var testType3Value1: String? = null
+		lateinit var testType4Value2: MutableList<Int>
 		}
         '''))
     }
