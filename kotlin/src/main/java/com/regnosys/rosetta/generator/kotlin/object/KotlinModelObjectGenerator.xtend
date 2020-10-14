@@ -3,10 +3,10 @@ package com.regnosys.rosetta.generator.kotlin.object
 import com.google.inject.Inject
 import com.regnosys.rosetta.RosettaExtensions
 import com.regnosys.rosetta.generator.object.ExpandedAttribute
-import com.regnosys.rosetta.rosetta.RosettaClass
 import com.regnosys.rosetta.rosetta.RosettaMetaType
 import com.regnosys.rosetta.rosetta.simple.Condition
 import com.regnosys.rosetta.rosetta.simple.Data
+
 import java.util.HashMap
 import java.util.List
 import java.util.Map
@@ -117,17 +117,17 @@ class KotlinModelObjectGenerator {
         //'''
     }
 
-    def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(RosettaClass type) {
-        type.allSuperTypes.expandedAttributes
-    }
+//    def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(RosettaClass type) {
+//        type.allSuperTypes.expandedAttributes
+//    }
 
     def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(Data type){
         type.allSuperTypes.map[it.expandedAttributes].flatten
     }
     
-    def dispatch String definition(RosettaClass element) {
-        element.definition
-    }
+//    def dispatch String definition(RosettaClass element) {
+//        element.definition
+//    }
     def dispatch String definition(Data element){
         element.definition
     }

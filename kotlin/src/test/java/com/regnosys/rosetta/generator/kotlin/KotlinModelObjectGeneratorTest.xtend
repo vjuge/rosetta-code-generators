@@ -29,14 +29,14 @@ class KotlinModelObjectGeneratorTest {
     @Inject Provider<XtextResourceSet> resourceSetProvider;
 
     @Test
-    @Disabled("Test to generate the kotlin for CDM")
+    //@Disabled("Test to generate the kotlin for CDM")
     def void generateCdm() {
         val dirs = newArrayList(
                 //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta'),
                 //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
                 //('rosetta-cdm/src/main/rosetta'),
                 //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
-                ('/Users/vincentjuge/devel/vjuge/cdm-kotlin/src/main/resources/cdm-rosetta')
+                ('/Users/vincentjuge/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples')
         );
 
         val resourceSet = resourceSetProvider.get
