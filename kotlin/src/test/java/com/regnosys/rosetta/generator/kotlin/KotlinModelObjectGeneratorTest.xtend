@@ -33,10 +33,11 @@ class KotlinModelObjectGeneratorTest {
     def void generateCdm() {
         val dirs = newArrayList(
                 //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta'),
-                //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
+                //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
                 //('rosetta-cdm/src/main/rosetta'),
-                //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
-                ('/Users/vincentjuge/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples')
+                //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
+                ('/home/vincent/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples'),
+                ('/home/vincent/Downloads/cdm/cdm/rosetta')
         );
 
         val resourceSet = resourceSetProvider.get
@@ -56,7 +57,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateEnums() {
         val kotlin = '''
         enum TestEnum: <"Test enum description.">
@@ -87,7 +88,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateTypes() {
         val kotlin = '''
         type TestType: <"Test type description.">
@@ -152,7 +153,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateTypesExtends() {
         val kotlin = 
         '''
@@ -207,7 +208,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateMetaTypes() {
         val kotlin = '''
 		metaType reference string
@@ -250,7 +251,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled("TODO fix oneOf code generation for attributes that are Lists")
+    @Disabled("TODO fix oneOf code generation for attributes that are Lists")
     def void shouldGenerateOneOfCondition() {
         val kotlin = '''
         type TestType: <"Test type with one-of condition.">
