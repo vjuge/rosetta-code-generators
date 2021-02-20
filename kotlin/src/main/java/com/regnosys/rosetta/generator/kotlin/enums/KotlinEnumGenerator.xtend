@@ -43,9 +43,13 @@ class KotlinEnumGenerator {
     private def generateEnums(List<RosettaEnumeration> enums, String version)
 		'''
 		«fileComment(version)»
+		@file:UseSerializers(LocalDateAsStringSerializer::class, LocalDateTimeAsStringSerializer::class)
 		package org.isda.cdm
 		import kotlinx.serialization.*
 		import kotlinx.serialization.json.*
+		import kotlinx.datetime.LocalDate
+
+
 		
 		«FOR e : enums SEPARATOR "\n"»
 		«val allEnumValues = allEnumsValues(e)»

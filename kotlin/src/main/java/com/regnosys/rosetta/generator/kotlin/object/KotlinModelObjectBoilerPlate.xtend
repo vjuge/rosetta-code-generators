@@ -9,7 +9,7 @@ class KotlinModelObjectBoilerPlate {
 
     def toAttributeName(ExpandedAttribute attribute) {
         if (attribute.name == "val")
-            '''val'''
+        '''`val`'''
 		else
         attribute.name.toFirstLower
     }
@@ -26,7 +26,7 @@ class KotlinModelObjectBoilerPlate {
         if (attribute.multiple)
             '''MutableList<«attribute.toRawType»>'''
 		else if (attribute.singleOptional)
-            '''«attribute.toRawType»?'''
+            '''«attribute.toRawType»'''
 		else
         '''«attribute.toRawType»'''
     }

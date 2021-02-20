@@ -15,7 +15,9 @@ class KotlinModelGeneratorUtil {
     static def comment(String definition) 
 		'''
 		«IF definition !==null && !definition.isEmpty »
-		// «definition»
+		/** 
+		* «definition» 
+		*/
 		«ENDIF»
 		'''
 

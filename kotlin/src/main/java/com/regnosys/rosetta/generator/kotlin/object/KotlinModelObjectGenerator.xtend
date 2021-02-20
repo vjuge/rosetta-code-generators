@@ -55,11 +55,15 @@ class KotlinModelObjectGenerator {
     private def generateClasses(List<Data> rosettaClasses, Set<Data> superTypes, String version) {
 		'''
 		«fileComment(version)»
+		@file:UseSerializers(LocalDateAsStringSerializer::class, LocalDateTimeAsStringSerializer::class)
 		package org.isda.cdm
 		
 		import kotlinx.serialization.*		
 		import org.isda.cdm.metafields.*
-		
+		import kotlinx.datetime.LocalDate
+		import kotlinx.datetime.LocalDateTime
+
+
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»
 		@Serializable
@@ -82,21 +86,21 @@ class KotlinModelObjectGenerator {
 	        if (attribute.enum && !attribute.hasMetas) {
 	            if (attribute.singleOptional) {
 	                '''
-	                	var «attribute.toAttributeName»: «attribute.toType» = null
+	                    var «attribute.toAttributeName»: «attribute.toType»? = null
 	                '''
 	            } else {
 	                '''
-	                	lateinit var «attribute.toAttributeName»: «attribute.toType»
+	                    var «attribute.toAttributeName»: «attribute.toType»? = null
 	                '''
 	            }
 	        } else {
 	        	if (attribute.singleOptional) {
 	                '''
-	                	var «attribute.toAttributeName»: «attribute.toType» = null
+	                    var «attribute.toAttributeName»: «attribute.toType»? = null
 	                '''
 	            } else {
 	                '''
-	                	lateinit var «attribute.toAttributeName»: «attribute.toType»
+	                    var «attribute.toAttributeName»: «attribute.toType»? = null
 	                '''
 	            }
 	        }

@@ -49,10 +49,12 @@ class KotlinMetaFieldGenerator {
 
     private def generateMetaFieldsImports() 
     '''
+	@file:UseSerializers(LocalDateAsStringSerializer::class, LocalDateTimeAsStringSerializer::class)
 	package org.isda.cdm.metafields
 	
 	import kotlinx.serialization.*
 	import org.isda.cdm.*
+	import kotlinx.datetime.LocalDate
 
 	'''
 
@@ -102,6 +104,15 @@ class KotlinMetaFieldGenerator {
     	var globalKey: String? = null
     	var externalKey: String? = null
     }
+
+    @Serializable
+    open class MetaAndTemplateFields{
+    	«FOR type : types.distinctBy(t|t.name.toFirstLower) SEPARATOR '\n'»var «type.name.toFirstLower»: «type.type.name.toKotlinBasicType»? = null«ENDFOR»
+    	var globalKey: String? = null
+    	var externalKey: String? = null
+    	var templateGlobalReference: String? = null
+    }
+
 
 	'''
 }

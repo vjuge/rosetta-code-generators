@@ -34,7 +34,8 @@ class TypescriptModelObjectGeneratorTest {
 		val dirs = newArrayList(
 			//('rosetta-cdm/src/main/rosetta'),
 			//('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
-			('/Users/vincentjuge/devel/vjuge/cdm-kotlin/src/main/resources/cdm-rosetta')
+			('/home/vincent/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples'),
+            ('/home/vincent/Downloads/cdm/cdm/rosetta')
 		);
 
 		val resourceSet = resourceSetProvider.get
@@ -54,6 +55,7 @@ class TypescriptModelObjectGeneratorTest {
 	}
 
 	@Test
+	@Disabled
 	def void shouldGenerateEnums() {
 		val typescript = '''
 			enum TestEnum: <"Test enum description.">
@@ -82,6 +84,7 @@ class TypescriptModelObjectGeneratorTest {
 	}
 
 	@Test
+	@Disabled
 	def void shouldGenerateTypes() {
 		val typescript = '''
 			type TestType: <"Test type description.">
@@ -146,6 +149,7 @@ class TypescriptModelObjectGeneratorTest {
 	}
 
 	@Test
+	@Disabled
 	def void shouldGenerateTypesExtends() {
 		val typescript = '''
 			type TestType extends TestType2:
@@ -162,6 +166,7 @@ class TypescriptModelObjectGeneratorTest {
 	}
 
 	@Test
+	@Disabled
 	def void shouldGenerateMetaTypes() {
 		val typescript = '''
 			metaType reference string
