@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Downloads/cdm/cdm/rosetta"
+		},
+		{
+			"path": "../../../Downloads/cdm-distribution-scala-2.96.1"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}
