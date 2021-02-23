@@ -1,5 +1,11 @@
 # Kotlin code generator
 
+setup JAVA_HOME
+
+> echo $JAVA_HOME 
+> /home/vincent/.jdks/adopt-openjdk-1.8.0_275
+
+
 To launch a unit test:
 
 `mvn test -pl kotlin -Dtest=KotlinModelObjectGeneratorTest#shouldGenerateEnums`
