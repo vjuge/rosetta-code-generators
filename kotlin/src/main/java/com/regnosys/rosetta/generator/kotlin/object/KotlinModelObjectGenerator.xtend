@@ -55,14 +55,19 @@ class KotlinModelObjectGenerator {
     private def generateClasses(List<Data> rosettaClasses, Set<Data> superTypes, String version) {
 		'''
 		«fileComment(version)»
-		@file:UseSerializers(LocalDateAsStringSerializer::class, LocalDateTimeAsStringSerializer::class)
 		package org.isda.cdm
 		
 		import kotlinx.serialization.*		
 		import org.isda.cdm.metafields.*
-		import kotlinx.datetime.LocalDate
-		import kotlinx.datetime.LocalDateTime
 
+		/**
+		* Basic Date implementation
+		*/
+		@Serializable
+		class Date (
+		    val year: Int,
+		    val month: Int,
+		    val day: Int)
 
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»

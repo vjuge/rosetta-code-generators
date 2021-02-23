@@ -19,7 +19,7 @@ class KotlinMetaFieldGenerator {
 
         val refs = rosettaClasses
                 .flatMap[expandedAttributes]
-                .filter[hasMetas && metas.exists[name=="reference"]]
+ 
                 .map[type]
                 .toSet
 
@@ -49,13 +49,10 @@ class KotlinMetaFieldGenerator {
 
     private def generateMetaFieldsImports() 
     '''
-	@file:UseSerializers(LocalDateAsStringSerializer::class, LocalDateTimeAsStringSerializer::class)
 	package org.isda.cdm.metafields
 	
 	import kotlinx.serialization.*
 	import org.isda.cdm.*
-	import kotlinx.datetime.LocalDate
-
 	'''
 
     private def generateFieldWithMeta(ExpandedType type) '''

@@ -43,23 +43,41 @@ class KotlinEnumGenerator {
     private def generateEnums(List<RosettaEnumeration> enums, String version)
 		'''
 		«fileComment(version)»
-		@file:UseSerializers(LocalDateAsStringSerializer::class, LocalDateTimeAsStringSerializer::class)
 		package org.isda.cdm
 		import kotlinx.serialization.*
 		import kotlinx.serialization.json.*
-		import kotlinx.datetime.LocalDate
-
-
+		import kotlinx.serialization.KSerializer
+		import kotlinx.serialization.SerializationException
+		import kotlinx.serialization.descriptors.PrimitiveKind
+		import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+		import kotlinx.serialization.descriptors.SerialDescriptor
+		import kotlinx.serialization.encoding.Decoder
+		import kotlinx.serialization.encoding.Encoder
 		
 		«FOR e : enums SEPARATOR "\n"»
 		«val allEnumValues = allEnumsValues(e)»
 		«comment(e.definition)»
-		@Serializable
-		enum class «e.name» {
+		@Serializable(with = «e.name».«e.name»Serializer::class)
+		enum class «e.name» (val value: String) {
 			«FOR value: allEnumValues SEPARATOR ','»
 			«comment(value.definition)»
-			«EnumHelper.convertValues(value)»
-			«ENDFOR»
+			«EnumHelper.convertValues(value)»«IF value.display !== null»("«value.display»")«ELSE»("«EnumHelper.convertValues(value)»")«ENDIF»
+			«ENDFOR»;
+
+			object «e.name»Serializer : KSerializer<«e.name»> {
+				override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("«e.name»", PrimitiveKind.STRING)
+
+				override fun serialize(encoder: Encoder, value: «e.name») {
+					val string = value.value
+					encoder.encodeString(string)
+				}
+
+				override fun deserialize(decoder: Decoder): «e.name» {
+					val string = decoder.decodeString()
+					val map = «e.name».values().associateBy(«e.name»::value)
+					return map[string] ?: throw SerializationException("unable to deserialize provided «e.name» with value ${string}")
+				}
+			}
 		}
 		«ENDFOR»
 		'''
