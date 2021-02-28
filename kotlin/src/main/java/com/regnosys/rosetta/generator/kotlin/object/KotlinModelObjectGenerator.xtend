@@ -75,6 +75,9 @@ class KotlinModelObjectGenerator {
 		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF»«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
 		{
 		«generateAttributes(c)»
+		«FOR condition : c.conditions»
+			«generateConditionLogic(c, condition)»
+		«ENDFOR»
 		}
 		«ENDFOR»
 		'''
@@ -120,10 +123,12 @@ class KotlinModelObjectGenerator {
     }
 
     private def generateOneOfLogic(Data c) {
-        //'''
-        //val numberOfPopulatedFields = listOf(«FOR attribute : c.allExpandedAttributes SEPARATOR ', '»«attribute.toAttributeName»«ENDFOR»).size
-        //assert(numberOfPopulatedFields == 1)
-        //'''
+        '''
+	        init {
+	        	require(listOfNotNull(«FOR attribute : c.allExpandedAttributes SEPARATOR ', '»«attribute.toAttributeName»«ENDFOR»).size == 1)
+	        }
+	        constructor(«FOR attribute : c.allExpandedAttributes SEPARATOR ', '»«attribute.toAttributeName»: «attribute.toType»? = null«ENDFOR»)
+        '''
     }
 
 //    def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(RosettaClass type) {

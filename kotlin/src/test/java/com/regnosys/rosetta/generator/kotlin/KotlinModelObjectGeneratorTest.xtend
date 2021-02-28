@@ -57,7 +57,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateEnums() {
         val kotlin = '''
         enum TestEnum: <"Test enum description.">
@@ -75,20 +75,49 @@ class KotlinModelObjectGeneratorTest {
 		package org.isda.cdm
 		import kotlinx.serialization.*
 		import kotlinx.serialization.json.*
+		import kotlinx.serialization.KSerializer
+		import kotlinx.serialization.SerializationException
+		import kotlinx.serialization.descriptors.PrimitiveKind
+		import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+		import kotlinx.serialization.descriptors.SerialDescriptor
+		import kotlinx.serialization.encoding.Decoder
+		import kotlinx.serialization.encoding.Encoder
 		
-		// Test enum description.
-		@Serializable
-		enum class TestEnum {
-		  // Test enum value 1
-		  TEST_ENUM_VALUE_1,
-		  // Test enum value 2
-		  TEST_ENUM_VALUE_2
+		/** 
+		* Test enum description. 
+		*/
+		@Serializable(with = TestEnum.TestEnumSerializer::class)
+		enum class TestEnum (val value: String) {
+		  /** 
+		  * Test enum value 1 
+		  */
+		  TEST_ENUM_VALUE_1("TEST_ENUM_VALUE_1"),
+		    /** 
+		  * Test enum value 2 
+		  */
+		  TEST_ENUM_VALUE_2("TEST_ENUM_VALUE_2")
+		  ;
+		
+		  object TestEnumSerializer : KSerializer<TestEnum> {
+		    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("TestEnum", PrimitiveKind.STRING)
+		
+		    override fun serialize(encoder: Encoder, value: TestEnum) {
+		      val string = value.value
+		      encoder.encodeString(string)
+		    }
+		
+		    override fun deserialize(decoder: Decoder): TestEnum {
+		      val string = decoder.decodeString()
+		      val map = TestEnum.values().associateBy(TestEnum::value)
+		      return map[string] ?: throw SerializationException("unable to deserialize provided TestEnum with value ${string}")
+		    }
+		  }
 		}
         '''))
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateTypes() {
         val kotlin = '''
         type TestType: <"Test type description.">
@@ -123,6 +152,15 @@ class KotlinModelObjectGeneratorTest {
 		import org.isda.cdm.metafields.*
 		
 		/**
+		* Basic Date implementation
+		*/
+		@Serializable
+		class Date (
+		    val year: Int,
+		    val month: Int,
+		    val day: Int)
+		
+		/**
 		 * Test type description.
 		 *
 		 * @param testEnum Optional test enum
@@ -135,29 +173,30 @@ class KotlinModelObjectGeneratorTest {
 		open class TestType
 		{
 		var testEnum: TestEnum? = null
-		lateinit var testTypeValue1: String
+		var testTypeValue1: String? = null
 		var testTypeValue2: String? = null
-		lateinit var testTypeValue3: MutableList<String>
-		lateinit var testTypeValue4: TestType2
+		var testTypeValue3: MutableList<String>? = null
+		var testTypeValue4: TestType2? = null
 		}
 		
 		@Serializable
 		open class TestType2
 		{
-		lateinit var testEnum: TestEnum
-		lateinit var testType2Value1: MutableList<BigDecimal>
-		var testType2Value2: LocalDate? = null
+		var testEnum: TestEnum? = null
+		var testType2Value1: MutableList<Float>? = null
+		var testType2Value2: Date? = null
 		}
         '''))
 
     }
 
     @Test
-    @Disabled
+    //@Disabled
+    // TODO remove Date implementation in beginning
     def void shouldGenerateTypesExtends() {
         val kotlin = 
         '''
-        type TestType extends TestType2:
+		type TestType extends TestType2:
 		    TestTypeValue1 string (1..1) <"Test string">
 		    TestTypeValue2 int (0..1) <"Test int">
 
@@ -166,8 +205,8 @@ class KotlinModelObjectGeneratorTest {
 	        TestType2Value2 date (0..*) <"Test date">
 
         type TestType3:
-	        TestType3Value1 string (0..1) <"Test string">
-	        TestType4Value2 int (1..*) <"Test int">
+		    TestType3Value1 string (0..1) <"Test string">
+		    TestType4Value2 int (1..*) <"Test int">
         '''.generateKotlin
 
 
@@ -184,31 +223,40 @@ class KotlinModelObjectGeneratorTest {
 		import kotlinx.serialization.*    
 		import org.isda.cdm.metafields.*
 		
+		/**
+		* Basic Date implementation
+		*/
+		@Serializable
+		class Date (
+		    val year: Int,
+		    val month: Int,
+		    val day: Int)
+		
 		@Serializable
 		open class TestType: TestType2()
 		{
-		lateinit var testTypeValue1: String
+		var testTypeValue1: String? = null
 		var testTypeValue2: Int? = null
 		}
 		
 		@Serializable
 		open class TestType2: TestType3()
 		{
-		var testType2Value1: BigDecimal? = null
-		lateinit var testType2Value2: MutableList<LocalDate>
+		var testType2Value1: Float? = null
+		var testType2Value2: MutableList<Date>? = null
 		}
 		
 		@Serializable
 		open class TestType3
 		{
 		var testType3Value1: String? = null
-		lateinit var testType4Value2: MutableList<Int>
+		var testType4Value2: MutableList<Int>? = null
 		}
         '''))
     }
 
     @Test
-    @Disabled
+    //@Disabled
     def void shouldGenerateMetaTypes() {
         val kotlin = '''
 		metaType reference string
@@ -238,20 +286,33 @@ class KotlinModelObjectGeneratorTest {
         println(types)
         assertTrue(types.contains(
         '''
-        @Serializable
-        enum class TestEnum {
-          TEST_ENUM_VALUE_1,
-          TEST_ENUM_VALUE_2
+        @Serializable(with = TestEnum.TestEnumSerializer::class)
+        enum class TestEnum (val value: String) {
+          TEST_ENUM_VALUE_1("TEST_ENUM_VALUE_1"),
+          TEST_ENUM_VALUE_2("TEST_ENUM_VALUE_2")
+          ;
+        
+          object TestEnumSerializer : KSerializer<TestEnum> {
+            override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("TestEnum", PrimitiveKind.STRING)
+        
+            override fun serialize(encoder: Encoder, value: TestEnum) {
+              val string = value.value
+              encoder.encodeString(string)
+            }
+        
+            override fun deserialize(decoder: Decoder): TestEnum {
+              val string = decoder.decodeString()
+              val map = TestEnum.values().associateBy(TestEnum::value)
+              return map[string] ?: throw SerializationException("unable to deserialize provided TestEnum with value ${string}")
+            }
+          }
         }
-        '''))
-        assertTrue(types.contains(
-        '''
         '''))
 
     }
 
     @Test
-    @Disabled("TODO fix oneOf code generation for attributes that are Lists")
+    //@Disabled
     def void shouldGenerateOneOfCondition() {
         val kotlin = '''
         type TestType: <"Test type with one-of condition.">
@@ -265,6 +326,26 @@ class KotlinModelObjectGeneratorTest {
         val types = kotlin.get('Types.kt').toString
         println(types)
         assertTrue(types.contains('''
+		/**
+		 * Test type with one-of condition.
+		 *
+		 * @param field1 Test string field 1
+		 * @param field2 Test string field 2
+		 * @param field3 Test number field 3
+		 * @param field4 Test number field 4
+		 */
+		@Serializable
+		open class TestType
+		{
+		var field1: String? = null
+		var field2: String? = null
+		var field3: Float? = null
+		var field4: MutableList<Float>? = null
+		init {
+		  require(listOfNotNull(field1, field2, field3, field4).size == 1)
+		}
+		constructor(field1: String? = null, field2: String? = null, field3: Float? = null, field4: MutableList<Float>? = null)
+		}
         '''))
     }
 
