@@ -19,7 +19,7 @@ class KotlinMetaFieldGenerator {
 
         val refs = rosettaClasses
                 .flatMap[expandedAttributes]
- 
+ 				.filter[hasMetas && metas.exists[name=="reference"]]
                 .map[type]
                 .toSet
 

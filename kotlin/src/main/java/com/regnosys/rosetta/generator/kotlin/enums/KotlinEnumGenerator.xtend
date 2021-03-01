@@ -57,27 +57,13 @@ class KotlinEnumGenerator {
 		«FOR e : enums SEPARATOR "\n"»
 		«val allEnumValues = allEnumsValues(e)»
 		«comment(e.definition)»
-		@Serializable(with = «e.name».«e.name»Serializer::class)
-		enum class «e.name» (val value: String) {
+		@Serializable
+		enum class «e.name» {
 			«FOR value: allEnumValues SEPARATOR ','»
 			«comment(value.definition)»
-			«EnumHelper.convertValues(value)»«IF value.display !== null»("«value.display»")«ELSE»("«EnumHelper.convertValues(value)»")«ENDIF»
+			@SerialName("«IF value.display !== null»«value.display»«ELSE»«EnumHelper.convertValues(value)»«ENDIF»")
+			«EnumHelper.convertValues(value)»
 			«ENDFOR»;
-
-			object «e.name»Serializer : KSerializer<«e.name»> {
-				override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("«e.name»", PrimitiveKind.STRING)
-
-				override fun serialize(encoder: Encoder, value: «e.name») {
-					val string = value.value
-					encoder.encodeString(string)
-				}
-
-				override fun deserialize(decoder: Decoder): «e.name» {
-					val string = decoder.decodeString()
-					val map = «e.name».values().associateBy(«e.name»::value)
-					return map[string] ?: throw SerializationException("unable to deserialize provided «e.name» with value ${string}")
-				}
-			}
 		}
 		«ENDFOR»
 		'''

@@ -64,10 +64,11 @@ class KotlinModelObjectGenerator {
 		* Basic Date implementation
 		*/
 		@Serializable
-		class Date (
-		    val year: Int,
-		    val month: Int,
-		    val day: Int)
+		class Date {
+		    val year: Int
+		    val month: Int
+		    val day: Int
+		}
 
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»

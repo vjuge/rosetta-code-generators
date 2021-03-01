@@ -57,7 +57,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateEnums() {
         val kotlin = '''
         enum TestEnum: <"Test enum description.">
@@ -117,7 +117,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateTypes() {
         val kotlin = '''
         type TestType: <"Test type description.">
@@ -191,7 +191,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     // TODO remove Date implementation in beginning
     def void shouldGenerateTypesExtends() {
         val kotlin = 
@@ -256,7 +256,7 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateMetaTypes() {
         val kotlin = '''
 		metaType reference string
@@ -291,28 +291,13 @@ class KotlinModelObjectGeneratorTest {
           TEST_ENUM_VALUE_1("TEST_ENUM_VALUE_1"),
           TEST_ENUM_VALUE_2("TEST_ENUM_VALUE_2")
           ;
-        
-          object TestEnumSerializer : KSerializer<TestEnum> {
-            override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("TestEnum", PrimitiveKind.STRING)
-        
-            override fun serialize(encoder: Encoder, value: TestEnum) {
-              val string = value.value
-              encoder.encodeString(string)
-            }
-        
-            override fun deserialize(decoder: Decoder): TestEnum {
-              val string = decoder.decodeString()
-              val map = TestEnum.values().associateBy(TestEnum::value)
-              return map[string] ?: throw SerializationException("unable to deserialize provided TestEnum with value ${string}")
-            }
-          }
         }
         '''))
 
     }
 
     @Test
-    //@Disabled
+    @Disabled
     def void shouldGenerateOneOfCondition() {
         val kotlin = '''
         type TestType: <"Test type with one-of condition.">
