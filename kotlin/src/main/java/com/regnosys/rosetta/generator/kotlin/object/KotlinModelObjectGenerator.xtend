@@ -23,9 +23,7 @@ class KotlinModelObjectGenerator {
     @Inject extension KotlinMetaFieldGenerator
 
     static final String CLASSES_FILENAME = 'Types.kt'
-    //static final String INTERFACES_FILENAME = 'Interfaces.kt'
     static final String META_FILENAME = 'Metatypes.kt'
-    //static final String SERIALIZATION_FILENAME = 'Serialization.kt' //to implement serialization in pure Kotlin, see https://github.com/Kotlin/kotlinx.serialization
 
 
     def Map<String, ? extends CharSequence> generate(Iterable<Data> rosettaClasses, Iterable<RosettaMetaType> metaTypes, String version) {
@@ -39,9 +37,6 @@ class KotlinModelObjectGenerator {
         val classes = rosettaClasses.sortBy[name].generateClasses(superTypes, version).replaceTabsWithSpaces
         result.put(CLASSES_FILENAME, classes)
 
-        //val interfaces = superTypes.sortBy[name].generateInterfaces(version).replaceTabsWithSpaces
-        // result.put(INTERFACES_FILENAME, interfaces)
-
         val metaFields = rosettaClasses.sortBy[name].generateMetaFields(metaTypes, version).replaceTabsWithSpaces
         result.put(META_FILENAME, metaFields)
 
@@ -52,34 +47,40 @@ class KotlinModelObjectGenerator {
 	/**
 	 * Generate the classes
 	 */
+	 // TODO remove Date implementation in beginning
+	 // TODO removed one-of condition due to limitations after instantiation of objects
     private def generateClasses(List<Data> rosettaClasses, Set<Data> superTypes, String version) {
 		'''
 		«fileComment(version)»
 		package org.isda.cdm
 		
 		import kotlinx.serialization.*		
-		import org.isda.cdm.metafields.*
 
 		/**
 		* Basic Date implementation
 		*/
 		@Serializable
-		class Date {
-		    val year: Int
-		    val month: Int
+		class Date (
+		    val year: Int,
+		    val month: Int,
 		    val day: Int
-		}
+		)
 
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»
 		@Serializable
-		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF»«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
-		{
+		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF»
+		(
 		«generateAttributes(c)»
-		«FOR condition : c.conditions»
-			«generateConditionLogic(c, condition)»
-		«ENDFOR»
-		}
+		)
+		«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
+		«IF c.conditions.size !== 0»
+«««		{
+«««			«FOR condition : c.conditions»
+«««			«generateConditionLogic(c, condition)»
+«««			«ENDFOR»
+«««		}
+		«ENDIF»
 		«ENDFOR»
 		'''
     }
@@ -89,27 +90,25 @@ class KotlinModelObjectGenerator {
     }
 
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
-	   //println(c)
-	   //println(attribute)
 	   if(attribute.enclosingType == c.name){     
 	        if (attribute.enum && !attribute.hasMetas) {
 	            if (attribute.singleOptional) {
 	                '''
-	                    var «attribute.toAttributeName»: «attribute.toType»? = null
+	                var «attribute.toAttributeName»: «attribute.toType»? = null,
 	                '''
 	            } else {
 	                '''
-	                    var «attribute.toAttributeName»: «attribute.toType»? = null
+	                var «attribute.toAttributeName»: «attribute.toType»? = null,
 	                '''
 	            }
 	        } else {
 	        	if (attribute.singleOptional) {
 	                '''
-	                    var «attribute.toAttributeName»: «attribute.toType»? = null
+	                var «attribute.toAttributeName»: «attribute.toType»? = null,
 	                '''
 	            } else {
 	                '''
-	                    var «attribute.toAttributeName»: «attribute.toType»? = null
+	                var «attribute.toAttributeName»: «attribute.toType»? = null,
 	                '''
 	            }
 	        }
@@ -128,7 +127,6 @@ class KotlinModelObjectGenerator {
 	        init {
 	        	require(listOfNotNull(«FOR attribute : c.allExpandedAttributes SEPARATOR ', '»«attribute.toAttributeName»«ENDFOR»).size == 1)
 	        }
-	        constructor(«FOR attribute : c.allExpandedAttributes SEPARATOR ', '»«attribute.toAttributeName»: «attribute.toType»? = null«ENDFOR»)
         '''
     }
 

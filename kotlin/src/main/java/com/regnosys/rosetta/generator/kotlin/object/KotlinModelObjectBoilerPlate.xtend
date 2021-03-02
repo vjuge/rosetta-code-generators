@@ -60,12 +60,8 @@ class KotlinModelObjectBoilerPlate {
         val name = type.toKotlinType
 
         if (type.enumeration) {
-            // Enums have scala types in the form "FooEnum.Value".
-            // For the meta type name we just need "FooEnum"
-            //return name.substring(0, name.lastIndexOf(".")).toFirstUpper
             return name
         } else if (name.contains(".")) {
-            // Remove any packages from basic types e.g. scala.math.BigDecimal
             return name.substring(name.lastIndexOf(".") + 1).toFirstUpper
         }
 

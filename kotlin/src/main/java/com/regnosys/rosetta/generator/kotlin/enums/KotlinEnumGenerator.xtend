@@ -45,14 +45,6 @@ class KotlinEnumGenerator {
 		«fileComment(version)»
 		package org.isda.cdm
 		import kotlinx.serialization.*
-		import kotlinx.serialization.json.*
-		import kotlinx.serialization.KSerializer
-		import kotlinx.serialization.SerializationException
-		import kotlinx.serialization.descriptors.PrimitiveKind
-		import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-		import kotlinx.serialization.descriptors.SerialDescriptor
-		import kotlinx.serialization.encoding.Decoder
-		import kotlinx.serialization.encoding.Encoder
 		
 		«FOR e : enums SEPARATOR "\n"»
 		«val allEnumValues = allEnumsValues(e)»

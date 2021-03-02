@@ -27,7 +27,7 @@ class KotlinModelGeneratorUtil {
 		/**
 		 * «definition»
 		 *
-		 «FOR attribute : attributes»
+		«FOR attribute : attributes»
 		 * @param «attribute.name» «attribute.definition»
 		«ENDFOR»
 		 */
