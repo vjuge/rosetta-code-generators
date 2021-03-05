@@ -11,5 +11,5 @@ target/
 .DS_Store
 **/src-gen/
 **/xtend-gen/
-/.vscode/settings.json
-/kotlin/cdm/**
+.vscode/
+kotlin/cdm/**

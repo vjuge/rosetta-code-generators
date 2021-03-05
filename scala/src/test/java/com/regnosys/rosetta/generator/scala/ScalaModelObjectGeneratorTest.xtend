@@ -29,15 +29,13 @@ class ScalaModelObjectGeneratorTest {
 	@Inject Provider<XtextResourceSet> resourceSetProvider;
 
 	@Test
-	//@Disabled("Test to generate the scala for CDM")
+	@Disabled("Test to generate the scala for CDM")
 	def void generateCdm() {
 		val dirs = newArrayList(
 			//('/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta'),
 			//('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
-			//('rosetta-cdm/src/main/rosetta'),
-			//('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
-			//('/Users/vincentjuge/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples')
-			('/Users/vincentjuge/devel/vjuge/rosetta-code-generators/scala/src/test/resources/rosetta')
+			('rosetta-cdm/src/main/rosetta'),
+			('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model')
 		);
 
 		val resourceSet = resourceSetProvider.get
@@ -241,17 +239,19 @@ class ScalaModelObjectGeneratorTest {
 				[metadata key]
 				testTypeValue1 TestType2(1..1)
 					[metadata reference]
-			
-			enum TestEnum:
-				TestEnumValue1
-				TestEnumValue2
+					
+			enum TestEnum: <"Test enum description.">
+				TestEnumValue1 <"Test enum value 1">
+				TestEnumValue2 <"Test enum value 2">
 			
 			type TestType2:
 				testType2Value1 number (1..1)
-					[metadata reference]
+					[metadata address]
+					
 				testType2Value2 string (1..1)
 					[metadata id]
 					[metadata scheme]
+				
 				testType2Value3 TestEnum (1..1)
 					[metadata scheme]
 		'''.generateScala
@@ -259,50 +259,51 @@ class ScalaModelObjectGeneratorTest {
 		val types = scala.values.join('\n').toString
 		//println(types)
 		assertTrue(types.contains('''
-		case class MetaFields(
-			scheme: Option[String],
+		case class MetaFields(scheme: Option[String],
 		    globalKey: Option[String],
-		    externalKey: Option[String]) {}
+		    externalKey: Option[String],
+		    location: List[Key]) {}
 	    '''))
 		
 		assertTrue(types.contains('''
-		case class FieldWithMetaString(
-			value: Option[String],
+		case class FieldWithMetaString(value: Option[String],
 		    meta: Option[MetaFields]) {}
 	    '''))
 
 		assertTrue(types.contains('''
-		case class FieldWithMetaTestEnum(
-			@JsonDeserialize(contentAs = classOf[TestEnum.Value])
+		case class FieldWithMetaTestEnum(@JsonDeserialize(contentAs = classOf[TestEnum.Value])
 		    @JsonScalaEnumeration(classOf[TestEnum.Class])
 		    value: Option[TestEnum.Value],
 		    meta: Option[MetaFields]) {}
 	    '''))
-		
-		assertTrue(types.contains('''
-		case class ReferenceWithMetaTestType2(
-			value: Option[TestType2],
-		    globalReference: Option[String],
-		    externalReference: Option[String]) {}
+	    
+	    assertTrue(types.contains('''
+		case class FieldWithMetaString(value: Option[String],
+		    meta: Option[MetaFields]) {}
 	    '''))
 		
 		assertTrue(types.contains('''
-		case class BasicReferenceWithMetaBigDecimal(
-			value: Option[scala.math.BigDecimal],
+		case class ReferenceWithMetaTestType2(value: Option[TestType2],
 		    globalReference: Option[String],
-		    externalReference: Option[String]) {}
+		    externalReference: Option[String],
+		    address: Option[Reference]) {}
+	    '''))
+		
+		assertTrue(types.contains('''
+		case class BasicReferenceWithMetaBigDecimal(value: Option[scala.math.BigDecimal],
+		    globalReference: Option[String],
+		    externalReference: Option[String],
+		    address: Option[Reference]) {}
 	    '''))
 
 		assertTrue(types.contains('''
-		case class TestType(
-			meta: Option[MetaFields],
+		case class TestType(meta: Option[MetaFields],
 		    testTypeValue1: ReferenceWithMetaTestType2) {
 		}
 	    '''))
 
 		assertTrue(types.contains('''
-		case class TestType2(
-			testType2Value1: BasicReferenceWithMetaBigDecimal,
+		case class TestType2(testType2Value1: BasicReferenceWithMetaBigDecimal,
 		    testType2Value2: FieldWithMetaString,
 		    testType2Value3: FieldWithMetaTestEnum) {
 		}
