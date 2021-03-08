@@ -30,8 +30,29 @@ class KotlinModelObjectBoilerPlate {
 		else
         '''«attribute.toRawType»'''
     }
+       
+    
+    def toTypeForDSL(ExpandedAttribute attribute) {
+        if (attribute.multiple)
+            '''«attribute.toRawType»'''
+        else if (!attribute.hasMetas && attribute.type.isType){
+//        	"PIPO"
+            attribute.type.toKotlinType
+        }
+//        else if (!attribute.hasMetas && !attribute.type.isType){
+//        	"PIPO"
+//        }
+        else if (attribute.refIndex >= 0) {
+            if (attribute.type.isType)
+                attribute.type.toReferenceWithMetaTypeName
+            else
+                attribute.type.toBasicReferenceWithMetaTypeName
+        }
+        else
+            attribute.type.toFieldWithMetaTypeName
+    }
 
-    private def toRawType(ExpandedAttribute attribute) {
+    protected def toRawType(ExpandedAttribute attribute) {
         if (!attribute.hasMetas)
             attribute.type.toKotlinType
         else if (attribute.refIndex >= 0) {
@@ -43,7 +64,7 @@ class KotlinModelObjectBoilerPlate {
         else
             attribute.type.toFieldWithMetaTypeName
     }
-
+        
     def toReferenceWithMetaTypeName(ExpandedType type) {
         '''ReferenceWithMeta«type.toMetaTypeName»'''
     }
