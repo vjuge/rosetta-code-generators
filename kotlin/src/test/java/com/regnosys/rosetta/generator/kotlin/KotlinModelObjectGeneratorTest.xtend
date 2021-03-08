@@ -37,7 +37,8 @@ class KotlinModelObjectGeneratorTest {
                 //('rosetta-cdm/src/main/rosetta'),
                 //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
                 ('/home/vincent/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples'),
-                ('/home/vincent/Downloads/cdm/cdm/rosetta')
+                ('/home/vincent/Downloads/cdm/cdm/rosetta') //2.85.0
+                //('/home/vincent/Downloads/cdm-2.97.8')
         );
 
         val resourceSet = resourceSetProvider.get

@@ -52,7 +52,7 @@ class KotlinModelObjectGenerator {
     private def generateClasses(List<Data> rosettaClasses, Set<Data> superTypes, String version) {
 		'''
 		«fileComment(version)»
-		package org.isda.cdm
+		package org.isda.cdm.kotlin
 		
 		import kotlinx.serialization.*		
 

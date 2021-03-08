@@ -43,7 +43,7 @@ class KotlinEnumGenerator {
     private def generateEnums(List<RosettaEnumeration> enums, String version)
 		'''
 		«fileComment(version)»
-		package org.isda.cdm
+		package org.isda.cdm.kotlin
 		import kotlinx.serialization.*
 		
 		«FOR e : enums SEPARATOR "\n"»
