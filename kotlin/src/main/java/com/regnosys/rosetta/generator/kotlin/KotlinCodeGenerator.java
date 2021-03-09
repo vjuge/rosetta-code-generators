@@ -46,6 +46,7 @@ public class KotlinCodeGenerator extends AbstractExternalGenerator {
 		List<Data> rosettaClasses = models.stream().flatMap(m->m.getElements().stream())
 				.filter((e)-> e instanceof Data)
 				.map(Data.class::cast).collect(Collectors.toList());
+		
 		List<RosettaMetaType> metaTypes = models.stream().flatMap(m->m.getElements().stream()).filter(RosettaMetaType.class::isInstance)
 				.map(RosettaMetaType.class::cast).collect(Collectors.toList());
 

@@ -47,38 +47,6 @@ class KotlinMetaFieldGenerator {
         return fileComment(version) + metaFieldsImports + referenceWithMeta + metaFields
     }
     
-//    def generateMetaFieldsDsl(List<Data> rosettaClasses, Iterable<RosettaMetaType> metaTypes, String version){
-//   	
-//        val refs = rosettaClasses
-//                .flatMap[expandedAttributes]
-// 				.filter[hasMetas && metas.exists[name=="reference"]]
-//                .map[type]
-//                .toSet
-//
-//        var referenceWithMeta = '';
-//
-//        for (ref:refs) {
-//            if (ref.isType)
-//                referenceWithMeta += generateReferenceWithMetaDSL(ref).toString
-//            else
-//                referenceWithMeta += generateBasicReferenceWithMetaDSL(ref).toString
-//        }
-//
-//        val metas =  rosettaClasses
-//                .flatMap[expandedAttributes]
-//                .filter[hasMetas && !metas.exists[name=="reference"]]
-//                .map[type]
-//                .toSet
-//
-//        for (meta:metas) {
-//            referenceWithMeta += generateFieldWithMetaDSL(meta).toString
-//        }
-//
-//        val metaFields = genMetaFieldsDSL(metaTypes.filter[t|t.name!="id" && t.name!="reference"], version)
-//
-//        return fileComment(version) + referenceWithMeta + metaFields
-//    } 
-
     private def generateMetaFieldsImports() 
     '''
 	package org.isda.cdm.kotlin
@@ -94,7 +62,7 @@ class KotlinMetaFieldGenerator {
     )
 
 	'''
-
+	
     private def generateAttribute(ExpandedType type) {
         if (type.enumeration) {
             '''var value: «type.toKotlinType»? = null,'''
@@ -113,12 +81,6 @@ class KotlinMetaFieldGenerator {
     )
     
 	'''
-	
-//	private def generateReferenceWithMetaDSL(ExpandedType type)
-//    '''
-//    fun «type.toMetaTypeName».value(f: «type.toKotlinType».() -> Unit) = 
-//	'''
-	
 	
     private def generateBasicReferenceWithMeta(ExpandedType type) 
     '''
@@ -150,4 +112,63 @@ class KotlinMetaFieldGenerator {
 
 
 	'''
+
+
+   /**
+     * Generate DSL for Meta Types
+     */
+    def generateMetaFieldsDsl(List<Data> rosettaClasses, Iterable<RosettaMetaType> metaTypes, String version){
+   	
+        val refs = rosettaClasses
+                .flatMap[expandedAttributes]
+ 				.filter[hasMetas && metas.exists[name=="reference"]]
+                .map[type]
+                .toSet
+
+        var referenceWithMeta = '';
+
+        for (ref:refs) {
+            if (ref.isType)
+                referenceWithMeta += generateReferenceWithMetaDSL(ref).toString
+            else
+                referenceWithMeta += generateBasicReferenceWithMetaDSL(ref).toString
+        }
+
+        val metas =  rosettaClasses
+                .flatMap[expandedAttributes]
+                .filter[hasMetas && !metas.exists[name=="reference"]]
+                .map[type]
+                .toSet
+
+        for (meta:metas) {
+            referenceWithMeta += generateFieldWithMetaDSL(meta).toString
+        }
+
+        return fileComment(version) + referenceWithMeta
+    } 
+
+
+	/**
+	 * Meta DSL -ok
+	 */
+	private def generateReferenceWithMetaDSL(ExpandedType type)
+    '''
+    fun ReferenceWithMeta«type.toMetaTypeName».ReferenceWithMeta«type.toMetaTypeName»Builder.value(f: «type.toKotlinType».«type.toKotlinType»Builder.() -> Unit) = orCreateValue.apply(f)
+	'''
+
+	/**
+	 * Meta DSL -ok
+	 */
+    private def generateBasicReferenceWithMetaDSL(ExpandedType type) 
+    '''
+	'''
+	
+	
+	/**
+	 * Meta DSL - ok
+	 */
+    private def generateFieldWithMetaDSL(ExpandedType type) '''
+    fun FieldWithMeta«type.toMetaTypeName».FieldWithMeta«type.toMetaTypeName»Builder.meta(f: MetaFields.MetaFieldsBuilder.() -> Unit) = orCreateMeta.apply(f)
+	'''
+
 }

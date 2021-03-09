@@ -27,7 +27,7 @@ class KotlinModelObjectGenerator {
     static final String CLASSES_FILENAME = 'Types.kt'
     static final String DSL_FILENAME = 'Types-Dsl.kt'
     static final String META_FILENAME = 'Metatypes.kt'
-//    static final String DSLMETA_FILENAME = 'Metatypes-Dsl.kt'
+    static final String DSLMETA_FILENAME = 'Metatypes-Dsl.kt'
 
 
     def Map<String, ? extends CharSequence> generate(Iterable<Data> rosettaClasses, Iterable<RosettaMetaType> metaTypes, String version) {
@@ -47,8 +47,8 @@ class KotlinModelObjectGenerator {
         val metaFields = rosettaClasses.sortBy[name].generateMetaFields(metaTypes, version).replaceTabsWithSpaces
         result.put(META_FILENAME, metaFields)
 
-// 		val metaFieldsDSL = rosettaClasses.sortBy[name].generateMetaFieldsDsl(metaTypes, version).replaceTabsWithSpaces
-//        result.put(DSLMETA_FILENAME, metaFieldsDSL)
+ 		val metaFieldsDSL = rosettaClasses.sortBy[name].generateMetaFieldsDsl(metaTypes, version).replaceTabsWithSpaces
+        result.put(DSLMETA_FILENAME, metaFieldsDSL)
 
         result;
     }
