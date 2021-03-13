@@ -69,8 +69,7 @@ class KotlinModelObjectGenerator {
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»
 		@Serializable
-		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF»
-		(
+		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF» (
 		«generateAttributes(c)»
 		)
 		«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
@@ -92,7 +91,7 @@ class KotlinModelObjectGenerator {
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
 	   if(attribute.enclosingType == c.name){
 		    '''
-			    var «attribute.toAttributeName»: «attribute.toType»? = null,
+				var «attribute.toAttributeName»: «attribute.toType»? = null,
 			'''
 		}        
     }

@@ -123,8 +123,7 @@ class KotlinModelObjectGeneratorTest {
 		* @param testTypeValue4 Test TestType2
 		 */
 		@Serializable
-		open class TestType
-		(
+		open class TestType (
 		var testEnum: TestEnum? = null,
 		var testTypeValue1: String? = null,
 		var testTypeValue2: String? = null,
@@ -133,8 +132,7 @@ class KotlinModelObjectGeneratorTest {
 		)
 		
 		@Serializable
-		open class TestType2
-		(
+		open class TestType2 (
 		var testEnum: TestEnum? = null,
 		var testType2Value1: MutableList<Float>? = null,
 		var testType2Value2: Date? = null,
@@ -167,24 +165,21 @@ class KotlinModelObjectGeneratorTest {
         assertTrue(types.contains(
         '''
 		@Serializable
-		open class TestType
-		(
+		open class TestType (
 		var testTypeValue1: String? = null,
 		var testTypeValue2: Int? = null,
 		)
 		: TestType2()
 		
 		@Serializable
-		open class TestType2
-		(
+		open class TestType2 (
 		var testType2Value1: Float? = null,
 		var testType2Value2: MutableList<Date>? = null,
 		)
 		: TestType3()
 		
 		@Serializable
-		open class TestType3
-		(
+		open class TestType3 (
 		var testType3Value1: String? = null,
 		var testType4Value2: MutableList<Int>? = null,
 		)
@@ -258,8 +253,7 @@ class KotlinModelObjectGeneratorTest {
 		* @param field4 Test number field 4
 		 */
 		@Serializable
-		open class TestType
-		(
+		open class TestType (
 		var field1: String? = null,
 		var field2: String? = null,
 		var field3: Float? = null,
