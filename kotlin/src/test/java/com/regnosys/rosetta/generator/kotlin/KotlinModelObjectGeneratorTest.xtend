@@ -32,12 +32,10 @@ class KotlinModelObjectGeneratorTest {
     //@Disabled("Test to generate the kotlin for CDM")
     def void generateCdm() {
         val dirs = newArrayList(
-                //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta'),
-                //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
-                //('rosetta-cdm/src/main/rosetta'),
-                //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
+				// common 'annotations.rosetta & basictypes.rosetta'
                 ('/home/vincent/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples'),
-                ('/home/vincent/Downloads/cdm/cdm/rosetta') //2.85.0
+                //cdm distribution content
+				('/home/vincent/Downloads/cdm-2.85.0')
                 //('/home/vincent/Downloads/cdm-2.97.8')
         );
 

@@ -90,28 +90,10 @@ class KotlinModelObjectGenerator {
     }
 
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
-	   if(attribute.enclosingType == c.name){     
-	        if (attribute.enum && !attribute.hasMetas) {
-	            if (attribute.singleOptional) {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            } else {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            }
-	        } else {
-	        	if (attribute.singleOptional) {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            } else {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            }
-	        }
+	   if(attribute.enclosingType == c.name){
+		    '''
+			    var «attribute.toAttributeName»: «attribute.toType»? = null,
+			'''
 		}        
     }
 
@@ -130,17 +112,10 @@ class KotlinModelObjectGenerator {
         '''
     }
 
-//    def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(RosettaClass type) {
-//        type.allSuperTypes.expandedAttributes
-//    }
-
     def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(Data type){
         type.allSuperTypes.map[it.expandedAttributes].flatten
     }
     
-//    def dispatch String definition(RosettaClass element) {
-//        element.definition
-//    }
     def dispatch String definition(Data element){
         element.definition
     }
