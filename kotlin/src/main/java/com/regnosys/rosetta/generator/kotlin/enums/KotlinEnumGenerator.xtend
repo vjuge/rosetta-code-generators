@@ -51,7 +51,8 @@ class KotlinEnumGenerator {
 			«comment(value.definition)»
 			@SerialName("«IF value.display !== null»«value.display»«ELSE»«EnumHelper.convertValues(value)»«ENDIF»")
 			«EnumHelper.convertValues(value)»
-			«ENDFOR»;
+			«ENDFOR»
+			;
 		}
 		«ENDFOR»
 		'''

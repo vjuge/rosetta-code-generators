@@ -65,7 +65,7 @@ class KotlinModelObjectGeneratorTest {
                 '''.generateKotlin
 
         val enums = kotlin.get('Enums.kt').toString
-        println(enums)
+//         println(enums)
         assertTrue(enums.contains('''	
 		/** 
 		* Test enum description. 
@@ -77,7 +77,7 @@ class KotlinModelObjectGeneratorTest {
 		  */
 		  @SerialName("TEST_ENUM_VALUE_1")
 		  TEST_ENUM_VALUE_1,
-		    /** 
+		  /** 
 		  * Test enum value 2 
 		  */
 		  @SerialName("TEST_ENUM_VALUE_2")
@@ -161,7 +161,7 @@ class KotlinModelObjectGeneratorTest {
 
 
         val types = kotlin.get('Types.kt').toString
-        println(types)
+//        println(types)
         assertTrue(types.contains(
         '''
 		@Serializable
@@ -214,7 +214,7 @@ class KotlinModelObjectGeneratorTest {
         '''.generateKotlin
 
         val types = kotlin.values.join('\n').toString
-        println(types)
+        // println(types)
         assertTrue(types.contains(
         '''
         @Serializable
@@ -230,7 +230,8 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+//    @Disabled
+//    todo : introduce condition generation later 
     def void shouldGenerateOneOfCondition() {
         val kotlin = '''
         type TestType: <"Test type with one-of condition.">
@@ -242,7 +243,7 @@ class KotlinModelObjectGeneratorTest {
         '''.generateKotlin
 
         val types = kotlin.get('Types.kt').toString
-        println(types)
+        // println(types)
         assertTrue(types.contains('''
 		/**
 		 * Test type with one-of condition.
