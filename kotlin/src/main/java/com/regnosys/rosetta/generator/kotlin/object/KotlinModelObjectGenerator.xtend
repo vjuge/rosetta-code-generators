@@ -40,7 +40,7 @@ class KotlinModelObjectGenerator {
 
         val classes = rosettaClasses.sortBy[name].generateClasses(superTypes, version).replaceTabsWithSpaces
         result.put(CLASSES_FILENAME, classes)
-        
+
         val dsl = rosettaClasses.sortBy[name].generateDslForJavaLib(superTypes, version).replaceTabsWithSpaces
         result.put(DSL_FILENAME, dsl)
 
@@ -74,7 +74,7 @@ class KotlinModelObjectGenerator {
 		    val month: Int,
 		    val day: Int
 		)
-		
+
 		inline fun <reified T : Any> orCreate(prop: T?): T {
 		    return if (prop == null) {
 		        val actualRuntimeClassName: String = T::class.qualifiedName!!
@@ -97,11 +97,11 @@ class KotlinModelObjectGenerator {
 «««		«ENDIF»
 «««			«generateDslFunctions(c)»
 		}
-		
+
 		«ENDFOR»
 		'''
     }
-    
+
     /**
      * Generate Kotlin DSL function for use with the Java distribution of CDM
      */
@@ -124,7 +124,7 @@ class KotlinModelObjectGenerator {
 			        «ENDIF»
 		        «ENDIF»
 	    	«ENDIF»
-    	«ENDFOR»		
+    	«ENDFOR»
 		«ENDFOR»
 		'''
     }
@@ -132,7 +132,7 @@ class KotlinModelObjectGenerator {
     private def generateAttributes(Data c) {
         '''«FOR attribute : c.allExpandedAttributes»«generateExpandedAttribute(c, attribute)»«ENDFOR»'''
     }
-    
+
     private def generateDslFunctions(Data c) {
     	'''
     	«FOR attribute : c.allExpandedAttributes»
@@ -142,7 +142,7 @@ class KotlinModelObjectGenerator {
     	«ENDFOR»
     	'''
     }
-    
+
 
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
 	   if(attribute.enclosingType == c.name){

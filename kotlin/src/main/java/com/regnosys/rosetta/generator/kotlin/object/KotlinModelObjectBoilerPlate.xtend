@@ -30,8 +30,8 @@ class KotlinModelObjectBoilerPlate {
 		else
         '''«attribute.toRawType»'''
     }
-       
-    
+
+
     def toTypeForDSL(ExpandedAttribute attribute) {
         if (attribute.multiple)
             '''«attribute.toRawType»'''
@@ -64,7 +64,7 @@ class KotlinModelObjectBoilerPlate {
         else
             attribute.type.toFieldWithMetaTypeName
     }
-        
+
     def toReferenceWithMetaTypeName(ExpandedType type) {
         '''ReferenceWithMeta«type.toMetaTypeName»'''
     }

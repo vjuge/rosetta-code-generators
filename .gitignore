@@ -13,3 +13,4 @@ target/
 **/xtend-gen/
 .vscode/
 kotlin/cdm/**
+kotlin-feature.code-workspace

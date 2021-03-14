@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Kotlin code generator
 
 setup JAVA_HOME
