@@ -25,10 +25,6 @@ class KotlinEnumGenerator {
         return result;
     }
 
-    def static toJavaEnumName(RosettaEnumeration enumeration, RosettaEnumValue rosettaEnumValue) {
-        return enumeration.name + '.' + EnumHelper.convertValues(rosettaEnumValue)
-    }
-
     private def allEnumsValues(RosettaEnumeration enumeration) {
         val enumValues = new ArrayList
         var e = enumeration;
@@ -55,13 +51,9 @@ class KotlinEnumGenerator {
 			«comment(value.definition)»
 			@SerialName("«IF value.display !== null»«value.display»«ELSE»«EnumHelper.convertValues(value)»«ENDIF»")
 			«EnumHelper.convertValues(value)»
-			«ENDFOR»;
+			«ENDFOR»
+			;
 		}
 		«ENDFOR»
 		'''
-
-    def boolean anyValueHasSynonym(RosettaEnumeration enumeration) {
-        enumeration.allEnumsValues.map[enumSynonyms].flatten.size > 0
-    }
-
 }

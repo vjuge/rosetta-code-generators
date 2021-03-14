@@ -32,12 +32,10 @@ class KotlinModelObjectGeneratorTest {
     //@Disabled("Test to generate the kotlin for CDM")
     def void generateCdm() {
         val dirs = newArrayList(
-                //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-cdm/src/main/rosetta'),
-                //('/Users/hugohills/code/src/github.com/REGnosys/rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
-                //('rosetta-cdm/src/main/rosetta'),
-                //('rosetta-dsl/com.regnosys.rosetta.lib/src/main/java/model'),
+				// common 'annotations.rosetta & basictypes.rosetta'
                 ('/home/vincent/devel/vjuge/rosetta-code-generators/kotlin/src/test/resources/rosetta-samples'),
-                ('/home/vincent/Downloads/cdm-2.85.0')
+                //cdm distribution content
+				('/home/vincent/Downloads/cdm-2.85.0')
                 //('/home/vincent/Downloads/cdm-2.97.8')
         );
 
@@ -79,7 +77,7 @@ class KotlinModelObjectGeneratorTest {
 		  */
 		  @SerialName("TEST_ENUM_VALUE_1")
 		  TEST_ENUM_VALUE_1,
-		    /** 
+		  /**
 		  * Test enum value 2 
 		  */
 		  @SerialName("TEST_ENUM_VALUE_2")
@@ -125,8 +123,7 @@ class KotlinModelObjectGeneratorTest {
 		* @param testTypeValue4 Test TestType2
 		 */
 		@Serializable
-		open class TestType
-		(
+		open class TestType (
 		var testEnum: TestEnum? = null,
 		var testTypeValue1: String? = null,
 		var testTypeValue2: String? = null,
@@ -135,8 +132,7 @@ class KotlinModelObjectGeneratorTest {
 		)
 		
 		@Serializable
-		open class TestType2
-		(
+		open class TestType2 (
 		var testEnum: TestEnum? = null,
 		var testType2Value1: MutableList<Float>? = null,
 		var testType2Value2: Date? = null,
@@ -169,24 +165,21 @@ class KotlinModelObjectGeneratorTest {
         assertTrue(types.contains(
         '''
 		@Serializable
-		open class TestType
-		(
+		open class TestType (
 		var testTypeValue1: String? = null,
 		var testTypeValue2: Int? = null,
 		)
 		: TestType2()
 		
 		@Serializable
-		open class TestType2
-		(
+		open class TestType2 (
 		var testType2Value1: Float? = null,
 		var testType2Value2: MutableList<Date>? = null,
 		)
 		: TestType3()
 		
 		@Serializable
-		open class TestType3
-		(
+		open class TestType3 (
 		var testType3Value1: String? = null,
 		var testType4Value2: MutableList<Int>? = null,
 		)
@@ -237,7 +230,8 @@ class KotlinModelObjectGeneratorTest {
     }
 
     @Test
-    //@Disabled
+//    @Disabled
+//    todo : introduce condition generation later
     def void shouldGenerateOneOfCondition() {
         val kotlin = '''
         type TestType: <"Test type with one-of condition.">
@@ -249,7 +243,7 @@ class KotlinModelObjectGeneratorTest {
         '''.generateKotlin
 
         val types = kotlin.get('Types.kt').toString
-        println(types)
+        // println(types)
         assertTrue(types.contains('''
 		/**
 		 * Test type with one-of condition.
@@ -260,8 +254,7 @@ class KotlinModelObjectGeneratorTest {
 		* @param field4 Test number field 4
 		 */
 		@Serializable
-		open class TestType
-		(
+		open class TestType (
 		var field1: String? = null,
 		var field2: String? = null,
 		var field3: Float? = null,

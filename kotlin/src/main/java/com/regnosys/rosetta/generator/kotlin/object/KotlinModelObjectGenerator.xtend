@@ -85,8 +85,7 @@ class KotlinModelObjectGenerator {
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»
 		@Serializable
-		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF»
-		(
+		open class «c.name»«IF c.superType === null && !superTypes.contains(c)»«ENDIF» (
 		«generateAttributes(c)»
 		)
 		«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
@@ -146,28 +145,10 @@ class KotlinModelObjectGenerator {
     
 
     private def generateExpandedAttribute(Data c, ExpandedAttribute attribute) {
-	   if(attribute.enclosingType == c.name){     
-	        if (attribute.enum && !attribute.hasMetas) {
-	            if (attribute.singleOptional) {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            } else {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            }
-	        } else {
-	        	if (attribute.singleOptional) {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            } else {
-	                '''
-	                var «attribute.toAttributeName»: «attribute.toType»? = null,
-	                '''
-	            }
-	        }
+	   if(attribute.enclosingType == c.name){
+		    '''
+				var «attribute.toAttributeName»: «attribute.toType»? = null,
+			'''
 		}        
     }
 
@@ -186,17 +167,10 @@ class KotlinModelObjectGenerator {
         '''
     }
 
-//    def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(RosettaClass type) {
-//        type.allSuperTypes.expandedAttributes
-//    }
-
     def dispatch Iterable<ExpandedAttribute> allExpandedAttributes(Data type){
         type.allSuperTypes.map[it.expandedAttributes].flatten
     }
     
-//    def dispatch String definition(RosettaClass element) {
-//        element.definition
-//    }
     def dispatch String definition(Data element){
         element.definition
     }

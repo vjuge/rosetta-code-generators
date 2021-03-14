@@ -56,7 +56,7 @@ class KotlinMetaFieldGenerator {
 
     private def generateFieldWithMeta(ExpandedType type) '''
     @Serializable
-    open class FieldWithMeta«type.toMetaTypeName»(
+    open class FieldWithMeta«type.toMetaTypeName» (
     	«generateAttribute(type)»
     	var meta: MetaFields? = null
     )
@@ -74,7 +74,7 @@ class KotlinMetaFieldGenerator {
     private def generateReferenceWithMeta(ExpandedType type)
     '''
     @Serializable
-    open class ReferenceWithMeta«type.toMetaTypeName»(
+    open class ReferenceWithMeta«type.toMetaTypeName» (
     	var value: «type.toKotlinType»? = null,
     	var globalReference: String? = null,
     	var externalReference: String? = null,
@@ -85,7 +85,7 @@ class KotlinMetaFieldGenerator {
     private def generateBasicReferenceWithMeta(ExpandedType type) 
     '''
     @Serializable
-    open class BasicReferenceWithMeta«type.toMetaTypeName»(
+    open class BasicReferenceWithMeta«type.toMetaTypeName» (
     	var value: «type.toKotlinType»? = null,
     	var globalReference: String? = null,
     	var externalReference: String? = null,
@@ -96,14 +96,14 @@ class KotlinMetaFieldGenerator {
     private def genMetaFields(Iterable<RosettaMetaType> types, String version) 
     '''
     @Serializable
-    open class MetaFields(
+    open class MetaFields (
     	«FOR type : types.distinctBy(t|t.name.toFirstLower) SEPARATOR '\n'»var «type.name.toFirstLower»: «type.type.name.toKotlinBasicType»? = null,«ENDFOR»
     	var globalKey: String? = null,
     	var externalKey: String? = null
     )
 
     @Serializable
-    open class MetaAndTemplateFields(
+    open class MetaAndTemplateFields (
     	«FOR type : types.distinctBy(t|t.name.toFirstLower) SEPARATOR '\n'»var «type.name.toFirstLower»: «type.type.name.toKotlinBasicType»? = null,«ENDFOR»
     	var globalKey: String? = null,
     	var externalKey: String? = null,
