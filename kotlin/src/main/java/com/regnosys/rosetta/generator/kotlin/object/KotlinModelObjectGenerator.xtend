@@ -121,7 +121,7 @@ class KotlinModelObjectGenerator {
 			        «ELSE»
 			        ««« if property is a collection of CDM objects
 fun «c.name».«c.name»Builder.«attribute.toAttributeName»(f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = add«attribute.name.toFirstUpper»(«attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder().apply(f).build())
-fun «c.name».«c.name»Builder.«attribute.toAttributeName»(index: Int, f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = getOrCreate«attribute.name.toFirstUpper»(index).apply{«attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder().apply(f).build()}
+fun «c.name».«c.name»Builder.«attribute.toAttributeName»(index: Int, f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = getOrCreate«attribute.name.toFirstUpper»(index).apply(f)
 			        «ENDIF»
 		        «ENDIF»
 	    	«ENDIF»
