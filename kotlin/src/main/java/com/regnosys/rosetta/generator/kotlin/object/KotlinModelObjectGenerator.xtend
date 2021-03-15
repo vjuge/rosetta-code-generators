@@ -75,12 +75,12 @@ class KotlinModelObjectGenerator {
 		    val day: Int
 		)
 
-		inline fun <reified T : Any> orCreate(prop: T?): T {
-		    return if (prop == null) {
-		        val actualRuntimeClassName: String = T::class.qualifiedName!!
-		        Class.forName(actualRuntimeClassName).newInstance() as T
-		    } else prop
-		}
+«««		inline fun <reified T : Any> orCreate(prop: T?): T {
+«««		    return if (prop == null) {
+«««		        val actualRuntimeClassName: String = T::class.qualifiedName!!
+«««		        Class.forName(actualRuntimeClassName).newInstance() as T
+«««		    } else prop
+«««		}
 
 		«FOR c : rosettaClasses SEPARATOR "\n"»
 		«classComment(c.definition, c.allExpandedAttributes)»
@@ -89,14 +89,14 @@ class KotlinModelObjectGenerator {
 		«generateAttributes(c)»
 		)
 		«IF c.superType !== null && superTypes.contains(c)»: «c.superType.name»()«ELSEIF c.superType !== null»: «c.superType.name»()«ENDIF»
-		{
+«««		{
 «««		«IF c.conditions.size !== 0»
 «««			«FOR condition : c.conditions»
 «««			«generateConditionLogic(c, condition)»
 «««			«ENDFOR»
 «««		«ENDIF»
 «««			«generateDslFunctions(c)»
-		}
+«««		}
 
 		«ENDFOR»
 		'''
@@ -120,7 +120,8 @@ class KotlinModelObjectGenerator {
 			        	fun «c.name».«c.name»Builder.«attribute.toAttributeName»(f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = orCreate«attribute.name.toFirstUpper».apply(f)
 			        «ELSE»
 			        ««« if property is a collection of CDM objects
-			        	fun «c.name».«c.name»Builder.«attribute.toAttributeName»(f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = add«attribute.name.toFirstUpper»(«attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder().apply(f).build())
+fun «c.name».«c.name»Builder.«attribute.toAttributeName»(f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = add«attribute.name.toFirstUpper»(«attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder().apply(f).build())
+fun «c.name».«c.name»Builder.«attribute.toAttributeName»(index: Int, f: «attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder.() -> Unit) = getOrCreate«attribute.name.toFirstUpper»(index).apply{«attribute.toTypeForDSL».«attribute.toTypeForDSL»Builder().apply(f).build()}
 			        «ENDIF»
 		        «ENDIF»
 	    	«ENDIF»

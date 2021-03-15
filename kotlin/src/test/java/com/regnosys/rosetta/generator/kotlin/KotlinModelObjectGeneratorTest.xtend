@@ -65,26 +65,23 @@ class KotlinModelObjectGeneratorTest {
                 '''.generateKotlin
 
         val enums = kotlin.get('Enums.kt').toString
-        println(enums)
-        assertTrue(enums.contains('''	
-		/** 
-		* Test enum description. 
-		*/
-		@Serializable
+//        println(enums)
+        assertTrue(enums.contains(
+        '''
 		enum class TestEnum {
 		  /** 
 		  * Test enum value 1 
 		  */
 		  @SerialName("TEST_ENUM_VALUE_1")
 		  TEST_ENUM_VALUE_1,
-		  /**
+		  /** 
 		  * Test enum value 2 
 		  */
 		  @SerialName("TEST_ENUM_VALUE_2")
 		  TEST_ENUM_VALUE_2
 		  ;
-		}
-        '''))
+        '''
+        ))
     }
 
     @Test
@@ -110,7 +107,7 @@ class KotlinModelObjectGeneratorTest {
                 '''.generateKotlin
 
         val types = kotlin.get('Types.kt').toString
-        println(types)
+//        println(types)
         assertTrue(types.contains(
         '''
 		/**
@@ -131,6 +128,7 @@ class KotlinModelObjectGeneratorTest {
 		var testTypeValue4: TestType2? = null,
 		)
 		
+		
 		@Serializable
 		open class TestType2 (
 		var testEnum: TestEnum? = null,
@@ -150,18 +148,18 @@ class KotlinModelObjectGeneratorTest {
 		    TestTypeValue1 string (1..1) <"Test string">
 		    TestTypeValue2 int (0..1) <"Test int">
 
-        type TestType2 extends TestType3:
-	        TestType2Value1 number (0..1) <"Test number">
-	        TestType2Value2 date (0..*) <"Test date">
+		type TestType2 extends TestType3:
+		TestType2Value1 number (0..1) <"Test number">
+		TestType2Value2 date (0..*) <"Test date">
 
-        type TestType3:
+		type TestType3:
 		    TestType3Value1 string (0..1) <"Test string">
 		    TestType4Value2 int (1..*) <"Test int">
         '''.generateKotlin
 
 
         val types = kotlin.get('Types.kt').toString
-        println(types)
+//        println(types)
         assertTrue(types.contains(
         '''
 		@Serializable
@@ -171,12 +169,14 @@ class KotlinModelObjectGeneratorTest {
 		)
 		: TestType2()
 		
+		
 		@Serializable
 		open class TestType2 (
 		var testType2Value1: Float? = null,
 		var testType2Value2: MutableList<Date>? = null,
 		)
 		: TestType3()
+		
 		
 		@Serializable
 		open class TestType3 (
@@ -214,7 +214,7 @@ class KotlinModelObjectGeneratorTest {
         '''.generateKotlin
 
         val types = kotlin.values.join('\n').toString
-        println(types)
+//        println(types)
         assertTrue(types.contains(
         '''
         @Serializable
